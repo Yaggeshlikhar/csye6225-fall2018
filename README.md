@@ -9,7 +9,7 @@ Prerequisites for building and deploying your application locally.
 
 
 Build and Deploy instructions for web application.
-
+Apache 2.4 php 5.5 mysql 
 
 
 Instructions to run unit, integration and/or load tests.

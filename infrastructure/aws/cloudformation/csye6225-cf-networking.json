@@ -1,12 +1,25 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Description" : "Infrastructure",
+  "Parameters":{
+     "Name":{
+        "Type":"String"
+  }
+},
   "Resources" : {
     "VPC" : {
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
         "CidrBlock" : "10.0.0.0/16",
-        "Tags" : [ {"Key" : "Application", "Value" : "csye-6225vpc" }] }      
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "Vpc"]
+]
+} }] }      
     },
 
     "Subnet1" : {
@@ -14,8 +27,15 @@
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.1.0/24",
-        "Tags" : [ {"Key" : "Application", "Value" : "csye-6225subnet1" } ]
-      }
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "subnet1"]
+]
+} }] }      
     },
 
     "Subnet2" : {
@@ -23,8 +43,15 @@
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.2.0/24",
-        "Tags" : [ {"Key" : "Application", "Value" : "csye-6225subnet2" } ]
-      }
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "subnet2"]
+]
+} }] }      
     },
 
     "Subnet3" : {
@@ -32,16 +59,29 @@
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.3.0/24",
-        "Tags" : [ {"Key" : "Application", "Value" :"csye-6225subnet3" } ]
-      }
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "subnet3"]
+]
+} }] }      
     },
-
 
     "InternetGateway" : {
       "Type" : "AWS::EC2::InternetGateway",
       "Properties" : {
-        "Tags" : [ {"Key" : "Application", "Value" :"csye-6225InternetGateway" } ]
-      }
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "Internetgatway"]
+]
+} }] }      
     },
 
     "AttachGateway" : {
@@ -56,8 +96,15 @@
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
         "VpcId" : {"Ref" : "VPC"},
-        "Tags" : [ {"Key" : "Application", "Value" : "csye-6225routeTable" } ]
-      }
+        "Tags" : [ {"Key" : "Name",
+                    "Value" :{
+                      "Fn::Join":[
+                         "",
+                         [{"Ref":"Name"
+                         },
+                         "routetable"]
+]
+} }] }      
     },
 
     "SubnetRouteTableAssociation1" : {

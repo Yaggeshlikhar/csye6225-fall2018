@@ -10,23 +10,30 @@ namespace Home\Controller;
 use Think\Controller;
 class UserController extends Controller {
 
-    //show login page
     public function loginPage(){
-     $this->display();
+
+      $this->display();
+    }
+    public function registerPage(){
+
+        $this->display();
     }
 
     //login API
     public  function  login(){
-     $email = I('post.email',null);
-     $password = I('post.password',null);
-        if (!isset($email)){
-
-            $this->ajaxReturn($this->json_style(1,"your emial can not empty",10005));
-
+      if (!IS_POST){
+        $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
         }
-        if (!isset($password)){
-            $this->ajaxReturn($this->json_style(1,"your password can not empty",10006));
+
+        $postData = file_get_contents("php://input");
+        $resultData = json_decode($postData,true);
+
+     $email = $resultData['email'];
+     $password = $resultData['password'];
+        if (!isset($email)||!isset($password)){
+            $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
         }
+
       $tb_user = M('user');
       $where['email'] = $email;
       $res = $tb_user->where($where)->find();
@@ -35,65 +42,58 @@ class UserController extends Controller {
            //gerentae token
            $token = $this->getRandomString(20);
            $_SESSION['tokenID'] =$token;
-           $this->ajaxReturn($this->json_style(0,"login success",10007,array('tokenID'=>$token)));
+           $_SESSION['userid'] =$res['id'];
+           $this->ajaxReturn(json_style(200,"login success",10002));
        }else{
-        $this->ajaxReturn($this->json_style(1,"password error,try again",10008));
+         $this->ajaxReturn(json_style(401,"password error,try again",10003));
        }
-
       }else{
-          $this->ajaxReturn($this->json_style(1,"the email is not exist",10009));
+          $this->ajaxReturn(json_style(401,"the email is not exist",10004));
 
       }
     }
 
-    public function  registerPage(){
 
-     $this->display();
-    }
 
     // register API
     public function  register(){
-        $email = I('post.email',null);
-        $password = I('post.password',null);
-        if (!isset($email)){
-          $this->ajaxReturn($this->json_style(1,"your emial can not empty",10001));
+       if (!IS_POST){
+        $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
         }
-        if (!isset($password)){
-          $this->ajaxReturn($this->json_style(1,"your password can not empty",10002));
+
+        $postData = file_get_contents("php://input");
+        $resultData = json_decode($postData,true);
+
+
+        //$email = I('post.email',null);
+        //$password = I('post.password',null);
+        if (!isset($resultData['email'])||!isset($resultData['password'])){
+            $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
         }
-        $data['email'] = $email;
+
+        $data['email'] = $resultData['email'];
 
          $tb_user = M('user');
          //first retrive from dB
          $res = $tb_user->where($data)->find();
          if (isset($res)){
-         $this->ajaxReturn($this->json_style(1,"your emial has been used ,please change one",10003));
+         $this->ajaxReturn(json_style(401,"your emial has been used ,please change one",10005));
          }else{
-         $data['password'] = password_hash($password,PASSWORD_BCRYPT);
-         $ans = $tb_user->add($data);
+         $data['password'] = password_hash($resultData['password'],PASSWORD_BCRYPT);
+         $res = $tb_user->add($data);
+         if ($res){
 
-         if ($ans){
              $token = $this->getRandomString(20);
              $_SESSION['tokenID'] =$token;
-              $this->ajaxReturn($this->json_style(0,"Success!!",10000,array('tokenID'=>$token)));
+             $_SESSION['userid'] = $res;
+              $this->ajaxReturn(json_style(200,"Success!!",10006));
          }else{
-         $this->ajaxReturn($this->json_style(1,"Sorry, tyr again.",10004));
+         $this->ajaxReturn(json_style(500,"database error",10007));
          }
          }
     }
 
-
-    private function  json_style($code,$msg,$subcode,$data =null){
-        return array(
-            'code' => $code,
-            'msg'=>$msg,
-            'subcode'=>$subcode,
-            'data'=>$data
-        );
-
-    }
-
-   public  function getRandomString($len, $chars=null)
+      public  function getRandomString($len, $chars=null)
     {
         if (is_null($chars)) {
             $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

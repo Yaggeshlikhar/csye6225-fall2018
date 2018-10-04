@@ -3,9 +3,11 @@ Team member information such as Name and Email address.
 Du Kun        du.kun@husky.neu.edu
 Wang Yuhan    wang.yuhan3@husky.neu.edu
 Zhao Wenyihn  zhao.weny@husky.neu.edu
+Yaggesh Likhar likhar.y@husky.neu.edu
 
 Prerequisites for building and deploying your application locally.
 
+Environment of Apache, XAMPP 
 
 
 Build and Deploy instructions for web application.

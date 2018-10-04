@@ -24,7 +24,7 @@ class ActionController extends CommonController {
       }
 
 //      //generate transcation id
-      $resultData['id'] = I("session.tokenID")."-".date("YmdHi");
+      $resultData['id'] = I("session.tokenID")."-".date("YmdHis");
       $resultData['date'] =date("Y-m-d H:i:s");
       $resultData['userid'] =I("session.userid");
 

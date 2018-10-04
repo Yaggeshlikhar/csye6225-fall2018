@@ -21,8 +21,15 @@ class UserController extends Controller {
 
     //login API
     public  function  login(){
-     $email = I('post.email',null);
-     $password = I('post.password',null);
+      if (!IS_POST){
+        $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+        }
+
+        $postData = file_get_contents("php://input");
+        $resultData = json_decode($postData,true);
+
+     $email = $resultData['email'];
+     $password = $resultData['password'];
         if (!isset($email)||!isset($password)){
             $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
         }
@@ -50,13 +57,21 @@ class UserController extends Controller {
 
     // register API
     public function  register(){
-        $email = I('post.email',null);
-        $password = I('post.password',null);
-        if (!isset($email)||!isset($password)){
+       if (!IS_POST){
+        $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+        }
+
+        $postData = file_get_contents("php://input");
+        $resultData = json_decode($postData,true);
+
+
+        //$email = I('post.email',null);
+        //$password = I('post.password',null);
+        if (!isset($resultData['email'])||!isset($resultData['password'])){
             $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
         }
 
-        $data['email'] = $email;
+        $data['email'] = $resultData['email'];
 
          $tb_user = M('user');
          //first retrive from dB
@@ -64,7 +79,7 @@ class UserController extends Controller {
          if (isset($res)){
          $this->ajaxReturn(json_style(401,"your emial has been used ,please change one",10005));
          }else{
-         $data['password'] = password_hash($password,PASSWORD_BCRYPT);
+         $data['password'] = password_hash($resultData['password'],PASSWORD_BCRYPT);
          $res = $tb_user->add($data);
          if ($res){
 

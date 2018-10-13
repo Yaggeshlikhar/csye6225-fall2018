@@ -6,6 +6,9 @@
      },
     "privateSubnetId2":{
        "Type":"String"
+     },
+    "privateSubnetId3":{
+       "Type":"String"
      }
 },
   "Resources" : {
@@ -45,7 +48,7 @@
          "Type" : "AWS::RDS::DBSubnetGroup",
          "Properties" : {
             "DBSubnetGroupDescription" : "privateDBSubnet",
-            "SubnetIds" : [{"Ref":"privateSubnetId1"},{"Ref":"privateSubnetId2"}],
+            "SubnetIds" : [{"Ref":"privateSubnetId1"},{"Ref":"privateSubnetId2"},{"Ref":"privateSubnetId2"}],
             "Tags" : [ {"Key" : "String", "Value" : "String"} ]
          }
       },

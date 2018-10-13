@@ -14,6 +14,8 @@ subcode value description
 10013: no transcation
 10014: delete transcation success
 10015: error submit method
+10016: upload file error
+
 
 
 

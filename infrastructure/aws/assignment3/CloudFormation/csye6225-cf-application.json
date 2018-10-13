@@ -40,19 +40,20 @@
       }
     },
 
-    "DBSecurityGroup": {
-   "Type": "AWS::RDS::DBSecurityGroup",
-   "Properties": {
-     
-      "DBSecurityGroupIngress": 
-         { 
-          
-          "EC2SecurityGroupId": { "Ref": "InstanceSecurityGroup"}
-          
-},
-      "GroupDescription": "Frontend Access"
-   }
-},
+    "DBSecurityGroup" : {
+    "Type" : "AWS::EC2::SecurityGroup",
+    "Properties" : {
+       "GroupDescription" : "Allow http to client host",
+       "VpcId" : {"Ref" : "Vpcid"},
+       "Tags": [{"Key":"Name","Value":"csye6225-rds"}],
+       "SecurityGroupIngress" : [{
+             "IpProtocol" : "tcp",
+             "FromPort" : 3306,
+             "ToPort" : 3306,
+             "SourceSecurityGroupId" : { "Ref": "InstanceSecurityGroup"}
+          }]
+    }
+ },
       "MyEC2Instance" : {
          "Type" : "AWS::EC2::Instance",
          "Properties" : {

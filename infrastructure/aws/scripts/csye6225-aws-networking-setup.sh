@@ -2,12 +2,19 @@
 #***********************************************************************************
 #    AWS VPC Creation Shell Script
 #***********************************************************************************
-. ./config.sh
+#. ./config.sh
 if [ $# -eq 0 ]; then
 echo "PLEASE PASS <STACK_NAME> as parameter while running your script"
 exit 1
 fi
 
+region="us-east-1"
+ZONE1="us-east-1a"
+ZONE2="us-east-1b"
+ZONE3="us-east-1c"
+
+echo "Enter CIDR block"
+read vpc_cidr
 
 VPC_ID=$(aws ec2 create-vpc \
   --cidr-block $vpc_cidr \
@@ -24,6 +31,10 @@ else
  exit $VPC_CREATE_STATUS
 fi
 
+echo "Enter VPC Name"
+read vpc_name
+aws ec2 create-tags --resources $VPC_ID \
+--tags Key=Name,Value=$vpc_name 2>&1
 
 
 IGW_ID=$(aws ec2 create-internet-gateway \
@@ -38,6 +49,11 @@ else
     echo " $IGW_ID "
     exit $IGW_CREATE_STATUS
 fi
+
+echo "Enter IGW Name"
+read IGW_name
+aws ec2 create-tags --resources $IGW_ID \
+--tags Key=Name,Value=$IGW_name 2>&1
 
 
 IGW_ATTACH=$(aws ec2 attach-internet-gateway \
@@ -54,71 +70,112 @@ else
     exit $IGW_ATTACH_STATUS
 fi
 
-
+echo "Enter Public Subnet1 CIDR"
+read public_subnet1_cidr
 
 PUBLIC_SUBNET_1=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[0]} \
+  --cidr-block ${public_subnet1_cidr} \
   --availability-zone $ZONE1 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
 
-echo "create subnet 1------------------>OK"
+echo "Enter Public Subnet1 Name"
+read public_subnet1_name
+aws ec2 create-tags --resources $PUBLIC_SUBNET_1 \
+--tags Key=Name,Value=$public_subnet1_name 2>&1
 
+echo "create public subnet 1------------------>OK"
+
+echo "Enter Public Subnet2 CIDR"
+read public_subnet2_cidr
 
 PUBLIC_SUBNET_2=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[1]} \
+  --cidr-block ${public_subnet2_cidr} \
   --availability-zone $ZONE2 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
 
-echo "create subnet 2------------------>OK"
+echo "Enter Public Subnet2 Name"
+read public_subnet2_name
+aws ec2 create-tags --resources $PUBLIC_SUBNET_2 \
+--tags Key=Name,Value=$public_subnet2_name 2>&1
+
+echo "create public subnet 2------------------>OK"
+
+echo "Enter Public Subnet3 CIDR"
+read public_subnet3_cidr
 
 
 PUBLIC_SUBNET_3=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[2]} \
+  --cidr-block ${public_subnet3_cidr} \
   --availability-zone $ZONE3 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
 
-echo "create subnet 3------------------>OK"
+echo "Enter Public Subnet3 Name"
+read public_subnet3_name
+aws ec2 create-tags --resources $PUBLIC_SUBNET_3 \
+--tags Key=Name,Value=$public_subnet3_name 2>&1
 
+echo "create public subnet 3------------------>OK"
+
+echo "Enter Private Subnet1 CIDR"
+read private_subnet1_cidr
 
 PRIVATE_SUBNET_1=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[3]} \
+  --cidr-block ${private_subnet1_cidr} \
   --availability-zone $ZONE1 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
 
+echo "Enter Private Subnet 1 Name"
+read private_subnet1_name
+aws ec2 create-tags --resources $PRIVATE_SUBNET_1 \
+--tags Key=Name,Value=$private_subnet1_name 2>&1
+
 echo "create private subnet 1------------------>OK"
 
+echo "Enter Private Subnet 2 CIDR"
+read private_subnet2_cidr
 
 PRIVATE_SUBNET_2=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[4]} \
+  --cidr-block ${private_subnet2_cidr} \
   --availability-zone $ZONE2 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
 
+echo "Enter Private Subnet 2 Name"
+read private_subnet2_name
+aws ec2 create-tags --resources $PRIVATE_SUBNET_2 \
+--tags Key=Name,Value=$private_subnet2_name 2>&1
+
 echo "create private subnet 2------------------>OK"
 
-
+echo "Enter Private Subnet 3 CIDR"
+read private_subnet3_cidr
 
 PRIVATE_SUBNET_3=$(aws ec2 create-subnet \
   --vpc-id $VPC_ID \
-  --cidr-block ${subnet_cidr[5]} \
+  --cidr-block ${private_subnet3_cidr} \
   --availability-zone $ZONE3 \
   --query 'Subnet.{SubnetId:SubnetId}' \
   --output text \
   --region $region)
+
+echo "Enter Private Subnet 3 Name"
+read private_subnet3_name
+aws ec2 create-tags --resources $PRIVATE_SUBNET_3 \
+--tags Key=Name,Value=$private_subnet3_name 2>&1
 
 echo "create private subnet 3------------------>OK"
 
@@ -200,5 +257,5 @@ Private_Associate_3=$(aws ec2 associate-route-table  \
 
 
 echo "BEGIN SUBNET TO ROUTE TABLE ASSOCIATION------------------>OK"
-echo "Complent!!"
+echo "Complete!!"
 

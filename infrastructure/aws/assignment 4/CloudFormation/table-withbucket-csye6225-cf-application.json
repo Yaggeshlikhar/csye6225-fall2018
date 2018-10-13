@@ -1,0 +1,92 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "DynamoDB-table",
+  "Parameters":{
+     "Vpcid":{
+         "Type":"AWS::EC2::VPC::Id"
+  },
+   "publicsubnetId1":{
+         "Type":"String"
+  },
+   "publicsubnetId2":{
+         "Type":"String"
+  },
+   "publicsubnetId3":{
+         "Type":"String"
+  },
+   "privatesubnetId1":{
+         "Type":"String"
+  },
+   "privatesubnetId2":{
+         "Type":"String"
+  },
+   "privatesubnetId3":{
+         "Type":"String"
+  }
+
+},
+  "Resources" : {
+    "myDynamoDBTable" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "AttributeDefinitions" : [
+          {
+            "AttributeName" : "id",
+            "AttributeType" : "S"   
+          }
+        ],
+        "KeySchema" : [
+          {
+            "AttributeName" : "id",
+            "KeyType" : "HASH"
+          }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : "1",
+          "WriteCapacityUnits" : "1"
+        },
+        "TableName" : "csye6225"
+      }
+	},
+    	"myS3Bucket":{
+    		"Type" : "AWS::S3::Bucket",
+    		"Properties": {
+    			"BucketName" : "csye6225-fall2018-likhary.me"
+
+    		}
+    	},
+
+    	"PublicDBSubnetGroup":{
+ 		"Type":"AWS::RDS::DBSubnetGroup",
+ 		"Properties":{
+ 		"DBSubnetGroupDescription":"Public Subnet Group",
+ 		"SubnetIds":[{"Ref":"publicsubnetId1"},{"Ref":"publicsubnetId2"},{"Ref":"publicsubnetId3"}],
+ 		"Tags":[{"Key":"Name","Value":"Public DB SubnetGroup"}]
+ 		}
+ 		},
+ 		"PrivateDBSubnetGroup":{
+ 		"Type":"AWS::RDS::DBSubnetGroup",
+ 		"Properties":{
+ 		"DBSubnetGroupDescription":"Private Subnet Group",
+ 		"SubnetIds":[{"Ref":"privatesubnetId1"},{"Ref":"privatesubnetId2"}, {"Ref":"privatesubnetId3"}],
+ 		"Tags":[{"Key":"Name","Value":"Private DB SubnetGroup"}]
+ 		}
+ },
+
+   		"RDSInstance" : {
+ 		"Type" : "AWS::RDS::DBInstance",
+ 		"Properties" : {
+ 		"Engine" : "MySQL",
+ 		"DBName" : "csye6225",
+		"DBInstanceClass" : "db.t2.medium",
+ 		"MultiAZ":false,
+ 		"DBInstanceIdentifier":"csye6225-spring2018",
+ 		"MasterUsername" : "csye6225master",
+ 		"MasterUserPassword" : "csye6225password",
+ 		"PubliclyAccessible":false,
+ 		"DBSubnetGroupName": {"Ref" : "PrivateDBSubnetGroup"},
+ 		"Tags" : [ { "Key" : "Name", "Value" : "My SQL Database" } ]
+ }
+}
+    }
+}

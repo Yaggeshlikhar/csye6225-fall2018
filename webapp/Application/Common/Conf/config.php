@@ -1,22 +1,23 @@
 <?php
 return array(
-    'URL_MODEL' => 2,//url mode
-    'TMPL_FILE_DEPR'      => '_', //The separator for the module and operation below the template. The default value is '/'
-    'DEFAULT_CONTROLLER' => 'Index', //  Default controller name
-    'DEFAULT_ACTION' => 'index', //  Default operation name
+    'URL_MODEL' => 2,//url模式
+    'TMPL_FILE_DEPR'      => '_',            // 模板下面模块和操作的分隔符，默认值为 '/'
+    'DEFAULT_CONTROLLER' => 'Index', // 默认控制器名称
+    'DEFAULT_ACTION' => 'index', // 默认操作名称
 
-   //'Configuration item'=>'Configuration value'
+    //'配置项'=>'配置值'
     //database
-    'DB_TYPE' => 'mysql',     //  db tyoe
-    'DB_HOST' => '127.0.0.1', //  server address
-    'DB_NAME' => 'test',          //   db name
-    'DB_USER' => 'root',      //   user name
-    'DB_PWD' => 'du921230304',    // password
-    'DB_PORT' => '3306',        //  api
-    'DB_PREFIX' => '',    //    Database table prefix
-    'DB_PARAMS' => array(), //   db connection parameter
-    'DB_DEBUG' => TRUE, //   Database debugging mode can be used to log SQL logs
-    'DB_FIELDS_CACHE' => true,        //  Enable field caching
-    'DB_CHARSET' => 'utf8mb4',      //  Database encoding defaults to utf8
-    'DB_BIND_PARAM' => true     //Model update and write with automatic parameter binding
+    'DB_TYPE' => 'mysql',     // 数据库类型
+    'DB_HOST' => 'localhost', // 服务器地址
+    'DB_NAME' => 'dk',          // 数据库名
+    'DB_USER' => 'dkbw',      // 用户名
+    'DB_PWD' => 'du921230304',    //密码
+    'DB_PORT' => '3306',        // 端口
+    'DB_PREFIX' => '',    // 数据库表前缀
+    'DB_PARAMS' => array(), // 数据库连接参数
+    'DB_DEBUG' => TRUE, // 数据库调试模式 开启后可以记录SQL日志
+    'DB_FIELDS_CACHE' => true,        // 启用字段缓存
+    'DB_CHARSET' => 'utf8mb4',      // 数据库编码默认采用utf8
+    'DB_BIND_PARAM' => true     //模型的更新和写入采用自动参数绑定
+
 );

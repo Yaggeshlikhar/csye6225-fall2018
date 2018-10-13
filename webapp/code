@@ -1,0 +1,19 @@
+subcode value description
+10001: lack  paramters
+10002: login success
+10003: error password
+10004: user email does not exist
+10005: email has been used
+10006: register success
+10007: database error ********
+10008: user error tokenID
+10009: user does not login *******
+10010: create transcation success
+10011: select transcation success
+10012: update transcation success
+10013: no transcation
+10014: delete transcation success
+10015: error submit method
+
+
+

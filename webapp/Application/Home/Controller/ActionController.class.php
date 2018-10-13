@@ -6,15 +6,16 @@
  * Time: 16:27
  */
 namespace Home\Controller;
-use Common\Controller\CommonController;
-class ActionController extends CommonController {
+//use Common\Controller\CommonController;
+use Home\InterfaceController\FortranscationController;
+
+class ActionController extends FortranscationController{
+
 
 
     //create transcation API
     public function  createTransaction(){
-        if (!IS_POST){
-        $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
-        }
+        $this->ifRightsubmit(2);
 
         $postData = file_get_contents("php://input");
         $resultData = json_decode($postData,true);
@@ -23,13 +24,11 @@ class ActionController extends CommonController {
           $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
       }
 
-//      //generate transcation id
-      $resultData['id'] = I("session.tokenID")."-".date("YmdHis");
+      $resultData['id'] = I("session.tokenID")."-".date("YmdHi");
       $resultData['date'] =date("Y-m-d H:i:s");
       $resultData['userid'] =I("session.userid");
 
-//      //save to database
-      $tb_transcation = M('transaction');
+      $tb_transcation = M('transcation');
       $res = $tb_transcation->add($resultData);
       if (!$res){
           $this->ajaxReturn(json_style(500,"database error",10008));
@@ -42,9 +41,8 @@ class ActionController extends CommonController {
 
     //retrive tanscation
     public  function  retrieveTransaction(){
-     if (!IS_GET){
-            $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
-      }
+
+    $this->ifRightsubmit(1);
      $where['userid'] =I('session.userid');
      $tb_transcation = M('transaction');
      $res = $tb_transcation->field("id,description,merchant,amount,date,category")->where($where)->select();
@@ -54,18 +52,16 @@ class ActionController extends CommonController {
 
     //update transcation
     public  function  updateTransaction(){
-        if (!IS_PUT){
-            $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
-        }
+        $this->ifRightsubmit(3);
         $putData = file_get_contents("php://input");
         $resultData = json_decode($putData,true);
 
      if (!isset($resultData['id'])){
       $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
      }
-
-     $tb_transcation = M('transaction');
-     $res = $tb_transcation->save($resultData);
+      $this->ifAuth($resultData['id']);
+      $tb_transcation = M('transaction');
+      $res = $tb_transcation->save($resultData);
      if ($res ===false){
         $this->ajaxReturn(json_style(500,"database error",10008));
      }else{
@@ -77,14 +73,13 @@ class ActionController extends CommonController {
 
     //delete transcation
     public  function  deleteTransaction(){
-        if (!IS_DELETE){
-            $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
-        }
+        $this->ifRightsubmit(4);
         $deleteData = file_get_contents("php://input");
         $resultData = json_decode($deleteData,true);
         if (!isset($resultData['id'])) {
             $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
         }
+        $this->ifAuth($resultData['id']);
         $tb_transcation = M('transaction');
         $res =$tb_transcation->where($resultData)->delete();
         if ($res==0){
@@ -96,6 +91,8 @@ class ActionController extends CommonController {
             $this->ajaxReturn(json_style(200,"delete success",10014));
         }
     }
+
+
 
 
 }

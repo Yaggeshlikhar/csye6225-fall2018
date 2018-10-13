@@ -23,7 +23,7 @@ class ActionController extends CommonController {
           $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
       }
 
-//      //generate transcation id
+//      //generate transcation id  $_SESSION['tokenid']
       $resultData['id'] = I("session.tokenID")."-".date("YmdHis");
       $resultData['date'] =date("Y-m-d H:i:s");
       $resultData['userid'] =I("session.userid");
@@ -65,6 +65,17 @@ class ActionController extends CommonController {
      }
 
      $tb_transcation = M('transaction');
+
+    $res = $tb_transcation->where(array("id"=>$resultData['id']))->find();
+     if (!isset($res)) {
+      $this->ajaxReturn(json_style(204,"no this transaction",10013));
+     }
+     if ($res['userid'] !=I('session.userid')) {
+      $this->ajaxReturn(json_style(401,"no permission",10016));
+     }
+
+
+
      $res = $tb_transcation->save($resultData);
      if ($res ===false){
         $this->ajaxReturn(json_style(500,"database error",10008));
@@ -86,10 +97,16 @@ class ActionController extends CommonController {
             $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
         }
         $tb_transcation = M('transaction');
+     $res = $tb_transcation->where(array("id"=>$resultData['id']))->find();
+     if (!isset($res)) {
+      $this->ajaxReturn(json_style(204,"no this transaction",10013));
+     }
+     if ($res['userid'] !=I('session.userid')) {
+      $this->ajaxReturn(json_style(401,"no permission",10016));
+     }
+
         $res =$tb_transcation->where($resultData)->delete();
-        if ($res==0){
-            $this->ajaxReturn(json_style(204,"no this transaction",10013));
-        }
+    
         if ($res===false){
             $this->ajaxReturn(json_style(500,"database error",10008));
         }else{

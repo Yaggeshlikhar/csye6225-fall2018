@@ -12,17 +12,38 @@ class CommonController extends Controller {
     //jude if login
     public function _initialize()
     {
-       // $token = I('get.tokenID', 'd');
         $token=  I('session.tokenID',null);
-        if (isset($token)){
-
-            //if ($token != I('session.tokenID',null)){
-             // $this->ajaxReturn(json_style(401,"error tokenID",10008));
-           // }
-        }else{
+        if (!isset($token)){
             $this->ajaxReturn(json_style(401,"sorry you must login first",10009));
         }
     }
+
+    public function ifRightsubmit($num){
+        switch ($num){
+            case 1:
+                if (!IS_GET){
+                    $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+                }
+                break;
+            case 2:
+                if (!IS_POST){
+                    $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+                }
+                break;
+            case 3:
+                if (!IS_PUT){
+                    $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+                }
+                break;
+            case 4:
+                if (!IS_DELETE){
+                    $this->ajaxReturn(json_style(400,"bad request, incorrect submit method",10015));
+                }
+                break;
+        }
+    }
+
+
 
 
 }

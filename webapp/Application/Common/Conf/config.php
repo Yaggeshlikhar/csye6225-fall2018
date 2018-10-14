@@ -5,6 +5,9 @@ return array(
     'DEFAULT_CONTROLLER' => 'Index', // 默认控制器名称
     'DEFAULT_ACTION' => 'index', // 默认操作名称
 
+    //网站域名
+    'SITEURL' => 'http://' . $_SERVER['HTTP_HOST'].'/',
+
     //'配置项'=>'配置值'
     //database
     'DB_TYPE' => 'mysql',     // 数据库类型
@@ -18,6 +21,9 @@ return array(
     'DB_DEBUG' => TRUE, // 数据库调试模式 开启后可以记录SQL日志
     'DB_FIELDS_CACHE' => true,        // 启用字段缓存
     'DB_CHARSET' => 'utf8mb4',      // 数据库编码默认采用utf8
-    'DB_BIND_PARAM' => true     //模型的更新和写入采用自动参数绑定
+    'DB_BIND_PARAM' => true,     //模型的更新和写入采用自动参数绑定
 
+    'BucketName' => 'csye6225web',
+    'IAM_KEY'=>'****',//change yourself
+    'IAM_SECRET' =>'***'////change yourself
 );

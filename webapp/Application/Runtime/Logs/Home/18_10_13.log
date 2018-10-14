@@ -1,0 +1,250 @@
+[ 2018-10-13T22:42:07+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000085s ]
+INFO: [ app_init ] --END-- [ RunTime:0.026527s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001692s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002104s ]
+
+[ 2018-10-13T22:42:54+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000056s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001279s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000997s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001181s ]
+
+[ 2018-10-13T22:43:44+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000051s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001050s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000997s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001151s ]
+
+[ 2018-10-13T22:43:59+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000047s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000705s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000708s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000849s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0297s ]
+SQL: SELECT * FROM `user` WHERE `email` = '921230304@qq.com' LIMIT 1   [ RunTime:0.0104s ]
+
+[ 2018-10-13T22:44:18+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000050s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001136s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001020s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001184s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `user` WHERE `email` = '921230304' LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-10-13T22:44:39+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000049s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001047s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000970s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001123s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `user` WHERE `email` = '921230304@qq.com' LIMIT 1   [ RunTime:0.0004s ]
+
+[ 2018-10-13T22:45:05+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000035s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001063s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001114s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001272s ]
+
+[ 2018-10-13T22:45:11+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000057s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000946s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001080s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001333s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `user` WHERE `email` = 'zhao' LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-10-13T22:45:18+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000035s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000916s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000781s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000952s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0008s ]
+SQL: SELECT * FROM `user` WHERE `email` = 'zhao' LIMIT 1   [ RunTime:0.0004s ]
+
+[ 2018-10-13T22:48:06+08:00 ] ::1 /home/action/createTransaction
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000036s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001085s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001078s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001249s ]
+ERR: 1146:Table 'test.transaction' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `transaction`
+ERR: 1146:Table 'test.transaction' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `transaction`
+
+[ 2018-10-13T22:49:05+08:00 ] ::1 /home/action/createTransaction
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000035s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001179s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001251s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001414s ]
+SQL: SHOW COLUMNS FROM `transcation` [ RunTime:0.0022s ]
+SQL: INSERT INTO `transcation` (`description`,`merchant`,`amount`,`category`,`id`,`date`,`userid`) VALUES ('this is a pen','dukun','123','tool','6JEyrengDXnK908yELXd-201810132249','2018-10-13 22:49:05','11') [ RunTime:0.0442s ]
+
+[ 2018-10-13T22:50:44+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000033s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001073s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001120s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001279s ]
+
+[ 2018-10-13T22:51:05+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000032s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000726s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000780s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000979s ]
+NOTIC: [8] Undefined index: attachfile /Applications/MAMP/htdocs/liunx/Application/Home/Controller/ActionController.class.php 第 120 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [2] finfo_file(): Empty filename or path /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [8] Undefined index: error /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 269 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 280 行.
+
+[ 2018-10-13T22:52:30+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000035s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001082s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001209s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001387s ]
+NOTIC: [8] Undefined index: attachfile /Applications/MAMP/htdocs/liunx/Application/Home/Controller/ActionController.class.php 第 119 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [2] finfo_file(): Empty filename or path /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [8] Undefined index: error /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 269 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 280 行.
+
+[ 2018-10-13T22:52:38+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000076s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000989s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000842s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000997s ]
+NOTIC: [8] Undefined index: attachfile /Applications/MAMP/htdocs/liunx/Application/Home/Controller/ActionController.class.php 第 119 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [2] finfo_file(): Empty filename or path /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [8] Undefined index: error /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 269 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 280 行.
+
+[ 2018-10-13T22:53:26+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000040s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001198s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001169s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001343s ]
+NOTIC: [8] Undefined index: attachfile /Applications/MAMP/htdocs/liunx/Application/Home/Controller/ActionController.class.php 第 119 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [2] finfo_file(): Empty filename or path /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 152 行.
+NOTIC: [8] Undefined index: error /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 269 行.
+NOTIC: [8] Undefined index: tmp_name /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 280 行.
+
+[ 2018-10-13T22:53:44+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000035s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001032s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001106s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001267s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002054s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002358s ]
+
+[ 2018-10-13T23:13:15+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000677s ]
+INFO: [ app_init ] --END-- [ RunTime:0.005146s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001844s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002162s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002084s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002328s ]
+
+[ 2018-10-13T23:47:33+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000690s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004714s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002292s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002762s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+SQL: SHOW COLUMNS FROM `receipt` [ RunTime:0.0327s ]
+ERR: 1364:Field 'idAttachment' doesn't have a default value
+ [ SQL语句 ] : INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/i20.jpeg')
+ERR: 1364:Field 'idAttachment' doesn't have a default value
+ [ SQL语句 ] : INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/i20.jpeg')
+
+[ 2018-10-13T23:48:21+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000060s ]
+INFO: [ app_init ] --END-- [ RunTime:0.006951s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.006873s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.007141s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+SQL: SHOW COLUMNS FROM `receipt` [ RunTime:0.0090s ]
+SQL: INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/i20.jpeg') [ RunTime:0.0021s ]
+SQL: SELECT * FROM `receipt` WHERE `idAttachment` = 1 LIMIT 1   [ RunTime:0.0056s ]
+
+[ 2018-10-13T23:50:29+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000086s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001933s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001701s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001963s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+SQL: SHOW COLUMNS FROM `receipt` [ RunTime:0.0021s ]
+SQL: INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/i20.jpeg') [ RunTime:0.0026s ]
+SQL: SELECT * FROM `receipt` WHERE `idAttachment` = 2 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-10-13T23:52:24+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000061s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001388s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001414s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001684s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+SQL: SHOW COLUMNS FROM `receipt` [ RunTime:0.0026s ]
+SQL: INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/5bc214b8e461e.jpeg') [ RunTime:0.0031s ]
+SQL: SELECT * FROM `receipt` WHERE `idAttachment` = 3 LIMIT 1   [ RunTime:0.0004s ]
+
+[ 2018-10-13T23:52:33+08:00 ] ::1 /home/action/attachFile
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000050s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000973s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000771s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000918s ]
+NOTIC: [2] call_user_func() expects parameter 1 to be a valid callback, no array or string given /Applications/MAMP/htdocs/liunx/ThinkPHP/Library/Think/Upload.class.php 第 170 行.
+SQL: SHOW COLUMNS FROM `receipt` [ RunTime:0.0021s ]
+SQL: INSERT INTO `receipt` (`transactionid`,`url`) VALUES ('6JEyrengDXnK908yELXd-201810132249','http://localhost:8888/Uploads/receipts/5bc214c1bf6f4.jpeg') [ RunTime:0.0007s ]
+SQL: SELECT * FROM `receipt` WHERE `idAttachment` = 4 LIMIT 1   [ RunTime:0.0005s ]
+

@@ -9,7 +9,11 @@
      },
     "privateSubnetId3":{
        "Type":"String"
+     },
+     "bucketname":{
+      "Type":"String"
      }
+
 },
   "Resources" : {
     "myDynamoDBTable" : {
@@ -40,7 +44,7 @@
              "Type" : "AWS::S3::Bucket",
              "Properties" : {
                "AccessControl" : "PublicRead",
-               "BucketName" : "csye6225-fall2018-wangyuhan3.me.csye6225.com" 
+               "BucketName" : {"Ref":"bucketname"} 
        }
     },
 
@@ -48,7 +52,7 @@
          "Type" : "AWS::RDS::DBSubnetGroup",
          "Properties" : {
             "DBSubnetGroupDescription" : "privateDBSubnet",
-            "SubnetIds" : [{"Ref":"privateSubnetId1"},{"Ref":"privateSubnetId2"},{"Ref":"privateSubnetId2"}],
+            "SubnetIds" : [{"Ref":"privateSubnetId1"},{"Ref":"privateSubnetId2"},{"Ref":"privateSubnetId3"}],
             "Tags" : [ {"Key" : "String", "Value" : "String"} ]
          }
       },

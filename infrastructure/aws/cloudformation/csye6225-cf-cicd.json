@@ -15,16 +15,16 @@
       "Default": "Travis-Code-Deploy"
     },
     "domainName": {
-      "Type": "String",
-      "Default": "csye6225-fall2018-likhary.me"
+      "Type": "String"
+      
     },
     "ServerRegion": {
       "Type": "String",
       "Default": "us-east-1"
     },
     "AccId": {
-      "Type": "String",
-      "Default": "278402227241"
+      "Type": "String"
+      
     },
     "ApplicationName": {
       "Type": "String",

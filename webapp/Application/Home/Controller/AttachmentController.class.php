@@ -15,7 +15,7 @@ class AttachmentController extends FortranscationController
 {
 
     //Attach a file to the transaction
-    public function attachFile()
+    public function createAttachfile()
     {
 
         $this->ifRightsubmit(2);
@@ -86,7 +86,7 @@ class AttachmentController extends FortranscationController
         $res = $tb_receipt->save($data);
         if ($res) {
             $res = $tb_receipt->where(array("attachmentid" => $res))->find();
-            $this->ajaxReturn(json_style(201, "success Update", 10010, $res));
+            $this->ajaxReturn(json_style(201, "success Update", 10012, $res));
         } else {
             $this->ajaxReturn(json_style(500, "database error", 10008));
         }
@@ -96,6 +96,7 @@ class AttachmentController extends FortranscationController
 
     //Delete
     public  function  deleteAttachment(){
+
         $this->ifRightsubmit(4);
         $putData = file_get_contents("php://input");
         $resultData = json_decode($putData,true);
@@ -105,10 +106,16 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
-        $this->ifAttachment($resultData['attachmentid']);
-        if (isset($res)){
-        $this->ajaxReturn(json_style(500, "database error", 10008));
+        $res =$this->ifAttachment($resultData['attachmentid']);
+        $tb_receipt = M('receipt');
+        $tb_receipt->where(array('attachmentid'=>$resultData['attachmentid']))->delete();
+
+        if ($res===false){
+            $this->ajaxReturn(json_style(500,"database error",10008));
+        }else{
+            $this->ajaxReturn(json_style(200,"delete success",10014));
         }
+
     }
 
 

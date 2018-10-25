@@ -8,14 +8,15 @@ subcode value description
 10007: database error ********
 10008: user error tokenID
 10009: user does not login *******
-10010: create transcation success
-10011: select transcation success
-10012: update transcation success
-10013: no transcation
-10014: delete transcation success
+10010: create  success
+10011: select  success
+10012: update  success
+10013: no this transcation
+10014: delete  success
 10015: error submit method
 10016: upload file error
-
+10017: no perssion
+10018: this transaction does not have this attachment file
 
 
 

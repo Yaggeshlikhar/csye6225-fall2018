@@ -34,12 +34,7 @@
             "Type":"String",
             "Default":"5432"
         },
-        "MyVpc":{
-            "Type":"String"
-        },
-        "mysubnetId":{
-            "Type":"String"
-        },
+       
         "cidr":{
             "Type":"String",
             "Default":"0.0.0.0/0"

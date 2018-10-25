@@ -23,7 +23,7 @@ return array(
     'DB_CHARSET' => 'utf8mb4',      // 数据库编码默认采用utf8
     'DB_BIND_PARAM' => true,     //模型的更新和写入采用自动参数绑定
 
-    'BucketName' => 'csye6225-fall2018-dukun.me.csye6225.com',
-    'IAM_KEY'=>'AKIAJV7C3ISG4AZW3PIA',//change yourself
-    'IAM_SECRET' =>'17uIScXmRF6QTEAuVad5P5wHqyZQ+R0FDwGAOV0C'////change yourself
+    'BucketName' => '',
+    'IAM_KEY'=>'',//change yourself
+    'IAM_SECRET' =>''////change yourself
 );

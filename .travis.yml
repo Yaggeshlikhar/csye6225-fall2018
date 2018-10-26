@@ -19,7 +19,7 @@ after_success:
   - mkdir codedeploy_artifact
   - ls
   - cp infrastructure/aws/codedeploy/*.sh .
-  
+  - cp infrastructure/aws/codedeploy/*.yml .
   - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/composer.json
   - mv csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip codedeploy_artifact/
  

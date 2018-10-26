@@ -13,9 +13,9 @@ script:
 after_success:
   - cd ../../..
   - pwd
-  -la -ls
+  -ls
   - mkdir codedeploy_artifact
-  -la -ls
+  -ls
   - cp infrastructure/aws/codedeploy/*.sh
   
   - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/composer.json

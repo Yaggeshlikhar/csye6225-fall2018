@@ -140,11 +140,13 @@
                   }
                }],
             "SecurityGroupIds":  [{"Ref":"InstanceSecurityGroup"}],  
+            "Tags": [{"Key" : "Name", "Value" : "MyEC2Instance"}],
             "UserData": {
                 "Fn::Base64": {
                       "Fn::Join":[
                          "\n",
                         [
+                           "#!/bin/bash -xe",
                             "sudo yum install  ntp wget  -y",
                             "sudo systemctl start ntpd",
                             "sudo systemctl enable ntpd",  

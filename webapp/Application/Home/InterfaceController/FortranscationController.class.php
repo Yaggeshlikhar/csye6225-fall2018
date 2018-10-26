@@ -22,6 +22,7 @@ class FortranscationController extends CommonController
 
     public function ifTranscation($transactionid)
     {
+        createTransaction();
         $tb_transcation = M('transaction');
         $where['id'] = $transactionid;
         $res = $tb_transcation->where($where)->find();
@@ -51,6 +52,7 @@ class FortranscationController extends CommonController
 
     public function ifAttachment($attachmentid)
     {
+        createReceipt();
         $tb_receipt = M('receipt');
         $where['attachmentid'] = $attachmentid;
         $res = $tb_receipt->where($where)->find();

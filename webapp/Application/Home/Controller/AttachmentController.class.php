@@ -34,6 +34,7 @@ class AttachmentController extends FortranscationController
         $data['s3url'] = $s3ulr;
         $data['transactionid'] = $transactionid;
         $data['localurl'] = $filename;
+        createReceipt();
         $tb_receipt = M('receipt');
         $res = $tb_receipt->add($data);
         if ($res) {
@@ -55,6 +56,7 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
+        createReceipt();
         $tb_receipt = M('receipt');
         $where['transactionid'] = $transactionid;
         $res = $tb_receipt->where($where)->select();
@@ -82,6 +84,7 @@ class AttachmentController extends FortranscationController
         $data['s3url'] = $s3ulr;
         $data['localurl'] = $filename;
         $data['attachmentid'] = $attachmentid;
+        createReceipt();
         $tb_receipt = M('receipt');
         $res = $tb_receipt->save($data);
         if ($res) {
@@ -107,6 +110,7 @@ class AttachmentController extends FortranscationController
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
         $res =$this->ifAttachment($resultData['attachmentid']);
+        createReceipt();
         $tb_receipt = M('receipt');
         $tb_receipt->where(array('attachmentid'=>$resultData['attachmentid']))->delete();
 

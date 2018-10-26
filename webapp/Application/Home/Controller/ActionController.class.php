@@ -27,6 +27,7 @@ class ActionController extends FortranscationController{
       $resultData['date'] =date("Y-m-d H:i:s");
       $resultData['userid'] =I("session.userid");
 
+      createTransaction();
       $tb_transcation = M('transaction');
       $res = $tb_transcation->add($resultData);
       if (!$res){
@@ -43,6 +44,7 @@ class ActionController extends FortranscationController{
 
     $this->ifRightsubmit(1);
      $where['userid'] =I('session.userid');
+     createTransaction();
      $tb_transcation = M('transaction');
      $res = $tb_transcation->field("id,description,merchant,amount,date,category")->where($where)->select();
      $this->ajaxReturn(json_style(200,"ok",10011,$res));
@@ -62,6 +64,7 @@ class ActionController extends FortranscationController{
 
       $res= $this->ifTranscation($resultData['id']);
       $this->ifAuth($res['userid']);
+        createTransaction();
       $tb_transcation = M('transaction');
       $res = $tb_transcation->save($resultData);
 
@@ -85,7 +88,7 @@ class ActionController extends FortranscationController{
 
         $res =$this->ifTranscation($resultData['id']);
         $this->ifAuth($res['userid']);
-
+        createTransaction();
         $tb_transcation = M('transaction');
         $res =$tb_transcation->where($resultData)->delete();
     

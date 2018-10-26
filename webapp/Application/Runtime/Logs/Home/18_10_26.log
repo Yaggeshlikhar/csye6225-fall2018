@@ -1,0 +1,195 @@
+[ 2018-10-26T05:52:11+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000022s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003108s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001032s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001118s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0348s ]
+SQL: SELECT * FROM `user` WHERE `email` = '921230304@qq.com' LIMIT 1   [ RunTime:0.0073s ]
+
+[ 2018-10-26T05:52:32+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000019s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001039s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001115s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001195s ]
+ERR: 1146:Table 'dk.ab' doesn't exist
+ [ SQL语句 ] : desc `ab`
+ERR: 1146:Table 'dk.ab' doesn't exist
+ [ SQL语句 ] : desc `ab`
+
+[ 2018-10-26T05:55:52+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000204s ]
+INFO: [ app_init ] --END-- [ RunTime:0.005541s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000996s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001085s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+ [ SQL语句 ] : if exists(select*from sys.objects where name ='ab')
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+ [ SQL语句 ] : if exists(select*from sys.objects where name ='ab')
+
+[ 2018-10-26T05:59:11+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000022s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002776s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002671s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002774s ]
+SQL: CREATE TABLE IF NOT EXISTS `ab` (`aid` INT NOT NULL primary key); [ RunTime:0.2192s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.006617s ]
+INFO: [ app_end ] --END-- [ RunTime:0.006694s ]
+
+[ 2018-10-26T05:59:14+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000238s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000334s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000391s ]
+SQL: CREATE TABLE IF NOT EXISTS `ab` (`aid` INT NOT NULL primary key); [ RunTime:0.0002s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000451s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000490s ]
+
+[ 2018-10-26T06:01:53+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002852s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001023s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001094s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '`ab` CREATE TABLE (`aid` INT NOT NULL primary key)' at line 1
+ [ SQL语句 ] : IF NOT EXISTS `ab` CREATE TABLE (`aid` INT NOT NULL primary key);
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '`ab` CREATE TABLE (`aid` INT NOT NULL primary key)' at line 1
+ [ SQL语句 ] : IF NOT EXISTS `ab` CREATE TABLE (`aid` INT NOT NULL primary key);
+
+[ 2018-10-26T06:02:23+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000280s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000381s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000436s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '`ab` CREATE TABLE ab (`aid` INT NOT NULL primary key)' at line 1
+ [ SQL语句 ] : IF NOT EXISTS `ab` CREATE TABLE ab (`aid` INT NOT NULL primary key);
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '`ab` CREATE TABLE ab (`aid` INT NOT NULL primary key)' at line 1
+ [ SQL语句 ] : IF NOT EXISTS `ab` CREATE TABLE ab (`aid` INT NOT NULL primary key);
+
+[ 2018-10-26T06:04:29+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000015s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000315s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000317s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000365s ]
+SQL: CREATE TABLE IF NOT EXISTS `jj` (`aid` INT NOT NULL primary key); [ RunTime:0.0549s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.006586s ]
+INFO: [ app_end ] --END-- [ RunTime:0.006658s ]
+
+[ 2018-10-26T06:26:12+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000294s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000600s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002854s ]
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment
+		primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+);
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment
+		primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+);
+
+[ 2018-10-26T06:28:30+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000823s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000344s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000401s ]
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+)
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+)
+
+[ 2018-10-26T06:29:18+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000251s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000321s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000368s ]
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+)
+ERR: 1221:Incorrect usage of OR REPLACE and IF NOT EXISTS
+ [ SQL语句 ] : create or replace table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+)
+
+[ 2018-10-26T06:30:29+08:00 ] ::1 /home/user/ag
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000015s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001039s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003685s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003798s ]
+SQL: create  table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+) [ RunTime:0.0003s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002173s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002238s ]
+
+[ 2018-10-26T06:35:43+08:00 ] ::1 /home/user/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.009301s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000670s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000788s ]
+SQL: create table if not exists user
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	password varchar(255) not null
+); [ RunTime:0.1070s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `user` WHERE `email` = '921230304@qq.com' LIMIT 1   [ RunTime:0.0064s ]
+

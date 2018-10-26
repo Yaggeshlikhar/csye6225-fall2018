@@ -11,13 +11,11 @@ script:
    
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - cd ../../..
   - mkdir codedeploy_artifact
   - cp infrastructure/aws/codedeploy/*.sh .
-  - cp infrastructure/aws/codedeploy/*.yml .
-  - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/build/libs/ROOT.war *.sh *.yml
+  - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/composer.json
   - mv csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip codedeploy_artifact/
-  - cd codedeploy_artifact
-  - cd ..
 
 deploy:
   - provider: s3

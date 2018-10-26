@@ -8,12 +8,17 @@ php:
     - hhvm
 
 script:
-  - pwd
   - cd webapp
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source --dev
 
-
-
+   
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
+  - mkdir codedeploy_artifact
+  - cp infrastructure/aws/codedeploy/*.sh .
+  - cp infrastructure/aws/codedeploy/*.yml .
+  - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/build/libs/ROOT.war *.sh *.yml
+  - mv csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip codedeploy_artifact/
+  - cd codedeploy_artifact
+  - cd ..

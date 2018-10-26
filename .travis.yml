@@ -12,7 +12,6 @@ before_script:
   - cd webapp
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
-  - phpunit
 
 script:
     - vendor/bin/phpunit --coverage-clover=coverage.xml

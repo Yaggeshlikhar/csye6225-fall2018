@@ -3,7 +3,7 @@ os: linux
 
 files:             
   - source: ./webapp/composer.json
-    destination: /opt/lampp/htdocs
+    destination: /opt
 
 hooks:
   AfterInstall:

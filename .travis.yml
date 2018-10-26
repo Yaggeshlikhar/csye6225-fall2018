@@ -8,8 +8,8 @@ php:
     - hhvm
 
 before_script:
-  -pwd
-  -cd webapp
+  - pwd
+  - cd webapp
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
   - phpunit

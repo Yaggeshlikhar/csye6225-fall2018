@@ -13,6 +13,12 @@ use Think\Controller;
 class UserController extends Controller
 {
 
+   public  function  ag(){
+
+    createUser();
+
+   }
+
 
     //login API
     public function login()
@@ -28,6 +34,7 @@ class UserController extends Controller
             $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
         }
 
+        createUser();
         $tb_user = M('user');
         $where['email'] = $email;
         $res = $tb_user->where($where)->find();
@@ -61,7 +68,7 @@ class UserController extends Controller
         }
 
         $data['email'] = $resultData['email'];
-
+        createUser();
         $tb_user = M('user');
         //first retrive from dB
         $res = $tb_user->where($data)->find();

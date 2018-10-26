@@ -15,7 +15,7 @@ class AttachmentController extends FortranscationController
 {
 
     //Attach a file to the transaction
-    public function attachFile()
+    public function createAttachfile()
     {
 
         $this->ifRightsubmit(2);
@@ -34,6 +34,7 @@ class AttachmentController extends FortranscationController
         $data['s3url'] = $s3ulr;
         $data['transactionid'] = $transactionid;
         $data['localurl'] = $filename;
+        createReceipt();
         $tb_receipt = M('receipt');
         $res = $tb_receipt->add($data);
         if ($res) {
@@ -55,6 +56,7 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
+        createReceipt();
         $tb_receipt = M('receipt');
         $where['transactionid'] = $transactionid;
         $res = $tb_receipt->where($where)->select();
@@ -82,11 +84,12 @@ class AttachmentController extends FortranscationController
         $data['s3url'] = $s3ulr;
         $data['localurl'] = $filename;
         $data['attachmentid'] = $attachmentid;
+        createReceipt();
         $tb_receipt = M('receipt');
         $res = $tb_receipt->save($data);
         if ($res) {
             $res = $tb_receipt->where(array("attachmentid" => $res))->find();
-            $this->ajaxReturn(json_style(201, "success Update", 10010, $res));
+            $this->ajaxReturn(json_style(201, "success Update", 10012, $res));
         } else {
             $this->ajaxReturn(json_style(500, "database error", 10008));
         }
@@ -96,6 +99,7 @@ class AttachmentController extends FortranscationController
 
     //Delete
     public  function  deleteAttachment(){
+
         $this->ifRightsubmit(4);
         $putData = file_get_contents("php://input");
         $resultData = json_decode($putData,true);
@@ -105,10 +109,17 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
-        $this->ifAttachment($resultData['attachmentid']);
-        if (isset($res)){
-        $this->ajaxReturn(json_style(500, "database error", 10008));
+        $res =$this->ifAttachment($resultData['attachmentid']);
+        createReceipt();
+        $tb_receipt = M('receipt');
+        $tb_receipt->where(array('attachmentid'=>$resultData['attachmentid']))->delete();
+
+        if ($res===false){
+            $this->ajaxReturn(json_style(500,"database error",10008));
+        }else{
+            $this->ajaxReturn(json_style(200,"delete success",10014));
         }
+
     }
 
 

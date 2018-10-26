@@ -16,7 +16,6 @@ class ActionController extends FortranscationController{
     //create transcation API
     public function  createTransaction(){
         $this->ifRightsubmit(2);
-
         $postData = file_get_contents("php://input");
         $resultData = json_decode($postData,true);
 
@@ -25,11 +24,11 @@ class ActionController extends FortranscationController{
       }
 
       $resultData['id'] = I("session.tokenID")."-".date("YmdHi");
-
       $resultData['date'] =date("Y-m-d H:i:s");
       $resultData['userid'] =I("session.userid");
 
-      $tb_transcation = M('transcation');
+      createTransaction();
+      $tb_transcation = M('transaction');
       $res = $tb_transcation->add($resultData);
       if (!$res){
           $this->ajaxReturn(json_style(500,"database error",10008));
@@ -45,6 +44,7 @@ class ActionController extends FortranscationController{
 
     $this->ifRightsubmit(1);
      $where['userid'] =I('session.userid');
+     createTransaction();
      $tb_transcation = M('transaction');
      $res = $tb_transcation->field("id,description,merchant,amount,date,category")->where($where)->select();
      $this->ajaxReturn(json_style(200,"ok",10011,$res));
@@ -61,7 +61,10 @@ class ActionController extends FortranscationController{
       $this->ajaxReturn(json_style(400,"bad request, lack paramters",10001));
      }
 
-      $this->ifAuth($resultData['id']);
+
+      $res= $this->ifTranscation($resultData['id']);
+      $this->ifAuth($res['userid']);
+        createTransaction();
       $tb_transcation = M('transaction');
       $res = $tb_transcation->save($resultData);
 
@@ -82,16 +85,11 @@ class ActionController extends FortranscationController{
         if (!isset($resultData['id'])) {
             $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
         }
-        $this->ifAuth($resultData['id']);
-        $tb_transcation = M('transaction');
-     $res = $tb_transcation->where(array("id"=>$resultData['id']))->find();
-     if (!isset($res)) {
-      $this->ajaxReturn(json_style(204,"no this transaction",10013));
-     }
-     if ($res['userid'] !=I('session.userid')) {
-      $this->ajaxReturn(json_style(401,"no permission",10016));
-     }
 
+        $res =$this->ifTranscation($resultData['id']);
+        $this->ifAuth($res['userid']);
+        createTransaction();
+        $tb_transcation = M('transaction');
         $res =$tb_transcation->where($resultData)->delete();
     
         if ($res===false){

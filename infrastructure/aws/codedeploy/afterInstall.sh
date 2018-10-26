@@ -1,3 +1,4 @@
+#!/bin/bash
 cd /opt/lampp
 
 sudo rm -rf htdocs

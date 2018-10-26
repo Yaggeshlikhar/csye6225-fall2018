@@ -11,11 +11,11 @@ script:
 
    
 after_success:
-  - cd ../../..
+  - cd /
   - pwd
-  -ls
+  - ls
   - mkdir codedeploy_artifact
-  -ls
+  - ls
   - cp infrastructure/aws/codedeploy/*.sh
   
   - zip -r csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip webapp/composer.json

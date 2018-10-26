@@ -291,7 +291,7 @@
                     {
                         "Key": "Name",
                         "Type": "KEY_AND_VALUE",
-                        "Value": "MyEC2Instance",
+                        "Value": "MyEC2Instance"
                     }
                 ],
                 "ServiceRoleArn": {

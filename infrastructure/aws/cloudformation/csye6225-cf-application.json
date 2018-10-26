@@ -146,6 +146,7 @@
                       "Fn::Join":[
                          "\n",
                         [
+                           "#!/bin/bash -xe",
                             "sudo yum install  ntp wget  -y",
                             "sudo systemctl start ntpd",
                             "sudo systemctl enable ntpd",  

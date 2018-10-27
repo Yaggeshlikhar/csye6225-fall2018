@@ -57,9 +57,9 @@ function createReceipt(){
 (
 	attachmentid int auto_increment
 		primary key,
-	transactionid varchar(255) not null,
-	localurl varchar(255) not null,
-	s3url varchar(255) not null
+	transactionid varchar(255),
+	localurl varchar(255),
+	s3url varchar(255)
 );';
     M()->execute($sql);
 

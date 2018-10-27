@@ -183,7 +183,7 @@
                            
                             "cd extra",
                             "sudo chmod 777 httpd-vhosts.conf",
-                            "echo \<VirtualHost *:80\> >> httpd-vhosts.conf",
+                            "echo \</VirtualHost *:80\> >> httpd-vhosts.conf",
                             "echo  ServerAdmin webmaster@dummy-host2.example.com >> httpd-vhosts.conf",
                             "echo  DocumentRoot \"/opt/lampp/htdocs\" >> httpd-vhosts.conf",
                             "echo  ServerName $DomainName >> httpd-vhosts.conf",

@@ -11,18 +11,19 @@ use Aws\S3\Exception\S3Exception;
 
 function connect(){
 
-    $IAM_KEY = C('IAM_KEY');
-    $IAM_SECRET = C('IAM_SECRET');
+//    $IAM_KEY = C('IAM_KEY');
+//    $IAM_SECRET = C('IAM_SECRET');
+    $provider = \Aws\Credentials\CredentialProvider::defaultProvider();
     $s3 = S3Client::factory(
         array(
-            'credentials' => array(
-                'key' => $IAM_KEY,
-                'secret' => $IAM_SECRET
-            ),
+            'credentials' => $provider,
             'version' => 'latest',
             'region'  => 'us-east-1'
         )
     );
+    
+    S3Client::getArguments();
+    
   return $s3;
 }
 

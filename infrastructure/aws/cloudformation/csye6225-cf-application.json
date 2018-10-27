@@ -171,7 +171,7 @@
                             "sudo rm -rf htdocs",
                             "sudo mkdir htdocs",
                             "sudo chmod 777 htdocs",
-                            "cd /htdocs",
+                            "cd htdocs",
                             "touch .env",
                             "sudo chmod 777 .env",
                             

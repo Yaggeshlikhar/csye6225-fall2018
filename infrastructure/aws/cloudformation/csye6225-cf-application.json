@@ -28,11 +28,11 @@
         },
       "fromDBPort":{
             "Type":"String",
-            "Default":"5432"
+            "Default":"3306"
         },
       "toDBPort":{
             "Type":"String",
-            "Default":"5432"
+            "Default":"3306"
         },
        
         "cidr":{
@@ -160,25 +160,58 @@
                             "wget https://www.apachefriends.org/xampp-files/5.6.38/xampp-linux-x64-5.6.38-0-installer.run",
                             "chmod 755 xampp-linux-x64-5.6.38-0-installer.run", 
                             "yes|sudo ./xampp-linux-x64-5.6.38-0-installer.run",
-                            "cd /opt/lampp",
-                            "sudo rm -rf htdocs",
-                            "sudo mkdir htdocs",
-                            "sudo chmod 777 htdocs",
+                           
                             "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
                             "sudo chmod +x ./install",
                             "sudo ./install auto",
                             "sudo service codedeploy-agent start",
-                            "sudo service codedeploy-agent status"
-
-
-
-                         
+                            "sudo service codedeploy-agent status",
+                          
+                            "cd /opt/lampp",
+                            "sudo rm -rf htdocs",
+                            "sudo mkdir htdocs",
+                            "sudo chmod 777 htdocs",
+                            "cd htdocs",
+                            "touch .env",
+                            "sudo chmod 777 .env",
+                            
+                          
+                           "echo DB_USER=csye6225master >> .env",
+                           "echo DB_PWD=csye6225password >> .env",
+                           "echo DB_PORT=3306 >> .env",
+                           "echo DB_NAME=csye6225 >> .env",
+                           {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo DB_HOST=",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "RDSInstance",
+                                            "Endpoint.Address"
+                                        ]
+                                    },
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                         {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo S3_NAME=",
+                                    {"Ref" : "domainName"},
+                                    " >> .env"
+                                ]
+                            ]
+                        }
+              
                         ]
                       ]
                  }
             } 
          },
-         "DependsOn":"InstanceSecurityGroup"
+         "DependsOn":"RDSInstance"
   },
   "myDynamoDBTable" : {
             "Type" : "AWS::DynamoDB::Table",
@@ -213,8 +246,8 @@
             "Type" : "AWS::RDS::DBInstance",
             "Properties" : {
                 "AllocatedStorage":"20",
-                "Engine" : "postgres",
-                "EngineVersion" : "10.5",
+                "Engine" : "mariadb",
+                
                 "DBName" : {"Ref":"dbName"},
                 "DBInstanceClass" : "db.t2.medium",
                 "MultiAZ":"false",
@@ -224,7 +257,7 @@
                 "PubliclyAccessible":"false",
                 "DBSubnetGroupName": {"Ref":"PrivateDBSubnetGroup"},
                 "VPCSecurityGroups":[{"Ref":"DBSecurityGroup"}],
-                "Tags" : [ { "Key" : "Name", "Value" : "My SQL Database" } ]
+                "Tags" : [ { "Key" : "Name", "Value" : "My Database" } ]
             }
   }    
   }

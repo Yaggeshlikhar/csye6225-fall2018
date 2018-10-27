@@ -170,7 +170,7 @@
                             "sudo service codedeploy-agent start",
                             "sudo service codedeploy-agent status",
 
-                            "sudo echo NODE_ENV=development > /var/.env",
+                           
                             "sudo echo DB_USER=csye6225master >> /var/.env",
                             "sudo echo DB_PASS=csye6225password >> /var/.env",
                             "sudo echo DB_PORT=3306 >> /var/.env",

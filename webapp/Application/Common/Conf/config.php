@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-$doten = new  \Dotenv\Dotenv('/opt/lampp/htdocs/csye6225-fall2018');
+$doten = new  \Dotenv\Dotenv('/opt/lampp/htdocs');
 $doten->load();
 
 

@@ -13,3 +13,4 @@ sudo chmod 777 Uploads
 cd Uploads
 sudo chmod 777 receipt
 
+

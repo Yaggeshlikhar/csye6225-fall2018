@@ -172,7 +172,7 @@
 
                            
                             "sudo echo DB_USER=csye6225master >> /var/.env",
-                            "sudo echo DB_PASS=csye6225password >> /var/.env",
+                            "sudo echo DB_PWD=csye6225password >> /var/.env",
                             "sudo echo DB_PORT=3306 >> /var/.env",
                             "sudo echo DB_NAME=csye6225 >> /var/.env",
                           
@@ -190,7 +190,7 @@
                             "Fn::Join": [
                                 "",
                                 [
-                                    "sudo echo BUCKET=",
+                                    "sudo echo S3_NAME=",
                                     {"Ref" : "domainName"},
                                     " >> /var/.env"
                                 ]
@@ -217,7 +217,7 @@
                  }
             } 
          },
-         "DependsOn":"InstanceSecurityGroup"
+         "DependsOn":"RDSInstance"
   },
   "myDynamoDBTable" : {
             "Type" : "AWS::DynamoDB::Table",

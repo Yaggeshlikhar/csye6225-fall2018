@@ -29,11 +29,19 @@ class AttachmentController extends FortranscationController
 
         $filename = 'Uploads' . $info['savepath'] . $info['savename'];
         //save in data
-        $s3ulr = uploadTos3($filename);
+        if ($_SERVER['HTTP_HOST']!='localhost'){
+            $data['s3url'] = uploadTos3($filename);
+            unlink($filename);
+          //  $data['localurl'] = null;
+          //  $this->ajaxReturn(json_style(201, "success created", 10010, $s3ulr));
+            
+        }else{
+            //
+            $data['localurl'] = $filename;
+          //  $data['s3url'] = null;
+        }
 
-        $data['s3url'] = $s3ulr;
         $data['transactionid'] = $transactionid;
-        $data['localurl'] = $filename;
         createReceipt();
         $tb_receipt = M('receipt');
         $res = $tb_receipt->add($data);
@@ -43,7 +51,7 @@ class AttachmentController extends FortranscationController
         } else {
             $this->ajaxReturn(json_style(500, "database error", 10008));
         }
-
+        
     }
 
     //Get list of files attached to the transaction
@@ -52,7 +60,7 @@ class AttachmentController extends FortranscationController
         $this->ifRightsubmit(1);
         $transactionid = I('get.transactionid', null);
         if (!isset($transactionid)) {
-            $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
+        $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
@@ -75,17 +83,33 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
+        createReceipt();
+        $tb_receipt = M('receipt');
+        $where['attachmentid'] = $attachmentid;
+        $res = $tb_receipt->where($where)->find();
+        if(!$res){
+            $this->ajaxReturn(json_style(204, "this transaction does not have this attachment file", 10018));
+        }
 
-        $this->ifAttachment($attachmentid);
+       //$this->ifAttachment($attachmentid);
 
         $info = $this->Uploadpicture();
         $filename = 'Uploads' . $info['savepath'] . $info['savename'];
-        $s3ulr = uploadTos3($filename);
-        $data['s3url'] = $s3ulr;
-        $data['localurl'] = $filename;
+        
+        if ($_SERVER['HTTP_HOST']!='localhost'){
+            deleteons3($res['localurl']);
+            $data['s3url'] = uploadTos3($filename);
+            unlink($filename);
+            
+        }else{
+
+            unlink($res['localurl']);
+            $data['localurl'] = $filename;
+        }
+        
         $data['attachmentid'] = $attachmentid;
-        createReceipt();
-        $tb_receipt = M('receipt');
+       // createReceipt();
+        //$tb_receipt = M('receipt');
         $res = $tb_receipt->save($data);
         if ($res) {
             $res = $tb_receipt->where(array("attachmentid" => $res))->find();
@@ -109,9 +133,27 @@ class AttachmentController extends FortranscationController
         }
         $res = $this->ifTranscation($transactionid);
         $this->ifAuth($res['userid']);
-        $res =$this->ifAttachment($resultData['attachmentid']);
+
         createReceipt();
         $tb_receipt = M('receipt');
+        $where['attachmentid'] = $resultData['attachmentid'];
+        $res = $tb_receipt->where($where)->find();
+        
+       // $res =$this->ifAttachment($resultData['attachmentid']);
+
+        if ($_SERVER['HTTP_HOST']!='localhost'){
+            deleteons3($res['localurl']);
+            //$data['s3url'] = uploadTos3($filename);
+            //unlink($filename);
+
+        }else{
+
+            unlink($res['localurl']);
+         //   $data['localurl'] = $filename;
+        }
+
+        //createReceipt();
+        //$tb_receipt = M('receipt');
         $tb_receipt->where(array('attachmentid'=>$resultData['attachmentid']))->delete();
 
         if ($res===false){

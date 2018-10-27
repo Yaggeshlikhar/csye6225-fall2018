@@ -95,7 +95,7 @@ class AttachmentController extends FortranscationController
         $filename = 'Uploads' . $info['savepath'] . $info['savename'];
         
         if ($_SERVER['HTTP_HOST']!='localhost'){
-            deleteons3($res['localurl']);
+            deleteons3($res['s3url']);
             $data['s3url'] = uploadTos3($filename);
             unlink($filename);
             
@@ -140,7 +140,7 @@ class AttachmentController extends FortranscationController
        // $res =$this->ifAttachment($resultData['attachmentid']);
 
         if ($_SERVER['HTTP_HOST']!='localhost'){
-            deleteons3($res['localurl']);
+            deleteons3($res['s3url']);
             //$data['s3url'] = uploadTos3($filename);
             //unlink($filename);
 

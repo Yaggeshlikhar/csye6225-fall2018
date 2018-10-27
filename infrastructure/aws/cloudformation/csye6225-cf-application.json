@@ -141,6 +141,9 @@
                }],
             "SecurityGroupIds":  [{"Ref":"InstanceSecurityGroup"}],  
             "Tags": [{"Key" : "Name", "Value" : "MyEC2Instance"}],
+            "IamInstanceProfile":{
+              "Ref":"Profile"
+            },
             "UserData": {
                 "Fn::Base64": {
                       "Fn::Join":[

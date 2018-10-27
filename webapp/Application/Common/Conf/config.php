@@ -1,7 +1,12 @@
 <?php
+require 'vendor/autoload.php';
+$doten = new  \Dotenv\Dotenv('/opt/lampp/htdocs');
+$doten->load();
+
+
 $webName = in_array($_SERVER['HTTP_HOST'],array('localhost'));
 $configArr = array(
-        'URL_MODEL' => 2,//url模式
+        'URL_MODEL' => 2,
         'TMPL_FILE_DEPR'      => '_',
         'DEFAULT_CONTROLLER' => 'Index',
         'DEFAULT_ACTION' => 'index',

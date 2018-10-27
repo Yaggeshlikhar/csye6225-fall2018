@@ -61,7 +61,10 @@
         "dbPassword":{
             "Type":"String",
             "Default":"csye6225password"
-        }
+        },
+         "Profile":{
+            "Type" : "String"
+         },
     },
 
 "Resources":{

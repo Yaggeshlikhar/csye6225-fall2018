@@ -168,7 +168,7 @@
                             "sudo chmod +x ./install",
                             "sudo ./install auto",
                             "sudo service codedeploy-agent start",
-                            "sudo service codedeploy-agent status"
+                            "sudo service codedeploy-agent status",
 
                             "sudo echo NODE_ENV=development > /var/.env",
                             "sudo echo DB_USER=csye6225master >> /var/.env",

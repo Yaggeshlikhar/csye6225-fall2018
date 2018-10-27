@@ -190,7 +190,7 @@
                             "echo  ErrorLog \"logs/dummy-host.example.com-error_log\" >> httpd-vhosts.conf",
                             "echo  CustomLog \"logs/dummy-host.example.com-access_log\" common >> httpd-vhosts.conf",
                             "echo </VirtualHost> >> httpd-vhosts.conf",
-                            "cd /"
+                            "cd /",
                             "cd /opt/lampp",
                             "sudo rm -rf htdocs",
                             "sudo mkdir htdocs",
@@ -198,7 +198,7 @@
                             "cd htdocs",
                             "touch .env",
                             "sudo chmod 777 .env",
-                            "cd /"   
+                            "cd /",   
                            "echo DB_USER=csye6225master >> .env",
                            "echo DB_PWD=csye6225password >> .env",
                            "echo DB_PORT=3306 >> .env",

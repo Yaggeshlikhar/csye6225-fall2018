@@ -170,11 +170,11 @@
                             "sudo service codedeploy-agent start",
                             "sudo service codedeploy-agent status"
 
-                            "sudo echo NODE_ENV=development > /var/.env \n",
-                            "sudo echo DB_USER=csye6225master >> /var/.env \n",
-                            "sudo echo DB_PASS=csye6225password >> /var/.env \n",
-                            "sudo echo DB_PORT=3306 >> /var/.env \n",
-                            "sudo echo DB_NAME=csye6225 >> /var/.env \n",
+                            "sudo echo NODE_ENV=development > /var/.env",
+                            "sudo echo DB_USER=csye6225master >> /var/.env",
+                            "sudo echo DB_PASS=csye6225password >> /var/.env",
+                            "sudo echo DB_PORT=3306 >> /var/.env",
+                            "sudo echo DB_NAME=csye6225 >> /var/.env",
                           
                         {
                             "Fn::Join": [
@@ -182,7 +182,7 @@
                                 [
                                     "sudo echo DDB_TABLE=",
                                     {"Ref" : "tableName"},
-                                    " >> /var/.env \n"
+                                    " >> /var/.env"
                                 ]
                             ]
                         },
@@ -192,7 +192,7 @@
                                 [
                                     "sudo echo BUCKET=",
                                     {"Ref" : "domainName"},
-                                    " >> /var/.env \n"
+                                    " >> /var/.env"
                                 ]
                             ]
                         },
@@ -203,14 +203,14 @@
                                     "sudo echo DB_HOST=",
                                     {
                                         "Fn::GetAtt": [
-                                            "RDSDB",
+                                            "RDSInstance",
                                             "Endpoint.Address"
                                         ]
                                     },
-                                    " >> /var/.env \n"
+                                    " >> /var/.env"
                                 ]
                             ]
-                        },
+                        }
                          
                         ]
                       ]

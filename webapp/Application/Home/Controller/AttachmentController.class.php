@@ -32,13 +32,11 @@ class AttachmentController extends FortranscationController
         if ($_SERVER['HTTP_HOST']!='localhost'){
             $data['s3url'] = uploadTos3($filename);
             unlink($filename);
-          //  $data['localurl'] = null;
-          //  $this->ajaxReturn(json_style(201, "success created", 10010, $s3ulr));
-            
+            $data['localurl'] = null;     
         }else{
             //
             $data['localurl'] = $filename;
-          //  $data['s3url'] = null;
+            $data['s3url'] = null;
         }
 
         $data['transactionid'] = $transactionid;
@@ -97,7 +95,7 @@ class AttachmentController extends FortranscationController
         $filename = 'Uploads' . $info['savepath'] . $info['savename'];
         
         if ($_SERVER['HTTP_HOST']!='localhost'){
-            deleteons3($res['localurl']);
+            deleteons3($res['s3url']);
             $data['s3url'] = uploadTos3($filename);
             unlink($filename);
             
@@ -142,7 +140,7 @@ class AttachmentController extends FortranscationController
        // $res =$this->ifAttachment($resultData['attachmentid']);
 
         if ($_SERVER['HTTP_HOST']!='localhost'){
-            deleteons3($res['localurl']);
+            deleteons3($res['s3url']);
             //$data['s3url'] = uploadTos3($filename);
             //unlink($filename);
 

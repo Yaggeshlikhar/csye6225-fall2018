@@ -62,9 +62,9 @@
             "Type":"String",
             "Default":"csye6225password"
         },
-        "Profile":{
-          "Type":"String"
-        }
+         "Profile":{
+            "Type" : "String"
+         }
     },
 
 "Resources":{

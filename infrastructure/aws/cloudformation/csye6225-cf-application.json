@@ -198,7 +198,6 @@
                             "cd htdocs",
                             "touch .env",
                             "sudo chmod 777 .env",
-                            "cd /",   
                            "echo DB_USER=csye6225master >> .env",
                            "echo DB_PWD=csye6225password >> .env",
                            "echo DB_PORT=3306 >> .env",

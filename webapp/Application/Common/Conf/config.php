@@ -47,7 +47,8 @@ if ($webName == true) {
         'DB_FIELDS_CACHE' => true,        // 启用字段缓存
         'DB_CHARSET' => 'utf8mb4',      // 数据库编码默认采用utf8
         'DB_BIND_PARAM' => true,     //模型的更新和写入采用自动参数绑定
-        'BucketName' => getenv("S3_NAME")
+        'BucketName' => getenv("S3_NAME"),
+        'TopicArn'=>getenv('TopicArn')
     );
 
 }

@@ -261,13 +261,13 @@
             "Properties" : {
                 "AttributeDefinitions" : [
                     {
-                        "AttributeName" : "id",
+                        "AttributeName" : "userEmail",
                         "AttributeType" : "S"
                     }
                 ],
                 "KeySchema" : [
                     {
-                        "AttributeName" : "id",
+                        "AttributeName" : "userEmail",
                         "KeyType" : "HASH"
                     }
                 ],

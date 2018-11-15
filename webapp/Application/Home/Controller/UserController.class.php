@@ -8,7 +8,17 @@
 
 namespace Home\Controller;
 
+
+
+use Aws\AwsClient;
+use Aws\DynamoDb\DynamoDbClient;
+use Aws\DynamoDb\Exception\DynamoDbException;
+use Aws\DynamoDb\Marshaler;
+use Aws\Sdk;
+use Aws\Ses\SesClient;
+use Aws\Sns\SnsClient;
 use Think\Controller;
+
 
 class UserController extends Controller
 {

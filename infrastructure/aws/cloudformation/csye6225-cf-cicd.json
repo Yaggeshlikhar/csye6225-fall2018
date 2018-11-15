@@ -436,8 +436,15 @@
     }
 
  }
+},
 
+"Outputs" : {
+       "S3BucketForLambda":{
+                "Description":"S3BucketForLambda",
+                "Value":{"Ref":"S3Bucket"},
+                "Export":{"Name":"S3BucketForLambda"}
+            },
+      }
 
-
-  }
+  
 }

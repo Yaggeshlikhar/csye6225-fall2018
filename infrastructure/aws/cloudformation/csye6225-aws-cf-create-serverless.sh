@@ -17,7 +17,7 @@ Role=$(aws iam get-role --role-name LambdaRole --query Role.{Arn:Arn} --output t
 echo "Role= $Role" $'\n'
 
 create=$(aws cloudformation create-stack --stack-name $stackName --template-body file://csye6225-aws-cf-serverless.json --capabilities CAPABILITY_NAMED_IAM \
-  --parameters  ParameterKey=S3Key,ParameterValue=lambdafunction.zip  ParameterKey=LambdaRole,ParameterValue=$Role)
+  --parameters  ParameterKey=S3Key,ParameterValue=lambdafunction.zip  ParameterKey=LambdaRole,ParameterValue=$Role ParameterKey=S3Bucket,ParameterValue=lambda>$aws_domain_name)
 
 
 

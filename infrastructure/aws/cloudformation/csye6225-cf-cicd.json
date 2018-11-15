@@ -1,3 +1,4 @@
+
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Creates a stack containing an IAM user, role, Three Policies and S3 Bucket",
@@ -30,7 +31,6 @@
       "Type": "String",
       "Default": "webapp"
     }
-
     
   },
   "Resources": {
@@ -62,7 +62,12 @@
               "Resource": [
                 "*"
               ]
-            }
+            },
+            {
+                            "Effect": "Allow",
+                            "Action": "lambda:*",
+                            "Resource": "*"
+                        }
           ]
         }
       },
@@ -232,7 +237,7 @@
             }
           ]
         },
-        "Path": "/",
+        "Path": "/"
       }
     },
 
@@ -305,23 +310,67 @@
             }
         },
 
-    "S3Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "PublicRead",
-        "BucketName": {
-          "Fn::Join": [
-            ".",
-            [
-              "code-deploy",
-              {
-                "Ref": "domainName"
-              }
-            ]
-          ]
-        }
-      }
-    },
+    "CodeDeployLambdaServiceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": "CodeDeployLambdaServiceRole",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "codedeploy.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambda"
+                ],
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "Ec2_Cloudwatch",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents",
+                                        "logs:DescribeLogStreams"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:logs:::*"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "Ec2_sns",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "sns:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
 
 "LambdaRole": {
       "Type": "AWS::IAM::Role",
@@ -343,41 +392,87 @@
             }
           ]
         },
-        "Path": "/"
+        "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+                    "arn:aws:iam::aws:policy/AmazonSESFullAccess",
+                    "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+                ],
+        "Path": "/",
+    "Policies": [
+                    {
+                        "PolicyName": "lambda_DB",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": "arn:aws:logs:::*"
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "dynamodb:*"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:dynamodb:us-east-1::table/"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+              }
+            },
+"CodeDeployApplicationforLambda": {
+            "Type": "AWS::CodeDeploy::Application",
+            "Properties": {
+                "ApplicationName": "CSYE6225CodeDeploy-Lambda",
+                "ComputePlatform": "Lambda"
+            }
+        },
+"DeploymentGroupforLambda": {
+            "Type": "AWS::CodeDeploy::DeploymentGroup",
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "CodeDeployApplicationforLambda"
+                },
+                "DeploymentGroupName": "aws-lambda",
+                "DeploymentConfigName": "CodeDeployDefault.LambdaAllAtOnce",
+                "DeploymentStyle": {
+                    "DeploymentType": "BLUE_GREEN",
+                    "DeploymentOption": "WITH_TRAFFIC_CONTROL"
+                },
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "CodeDeployLambdaServiceRole",
+                        "Arn"
+                    ]
+                }
+            }
+        },
+
+        "S3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead",
+        "BucketName": {
+          "Fn::Join": [
+            ".",
+            [
+              "code-deploy",
+              {
+                "Ref": "domainName"
+              }
+            ]
+          ]
+        }
       }
     },
-
-"EC2ToCloudWatchPolicy" : {
-    "Type" : "AWS::IAM::Policy",
-    "Properties" : {
-      "PolicyName" : "EC2-CloudWatch-Policy",
-      "PolicyDocument":{
-        "Version": "2012-10-17",
-        "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStreams"
-            ],
-            "Resource": [
-                "arn:aws:logs:::*"
-            ]
-        }
-    ]
-
-      },
-      "Roles" : [
-        {
-          "Ref" : "LambdaRole"
-        }
-      ]
-
-    }
-
-},
 
 "EC2ToDynamoDBPolicy" : {
     "Type" : "AWS::IAM::Policy",
@@ -439,11 +534,17 @@
 },
 
 "Outputs" : {
-       "S3BucketForLambda":{
-                "Description":"S3BucketForLambda",
+       
+            "S3Bucket":{
+                "Description":"S3Bucket",
                 "Value":{"Ref":"S3Bucket"},
-                "Export":{"Name":"S3BucketForLambda"}
+                "Export":{"Name":"S3Bucket"}
             },
+      "LambdaRole":{
+                "Description":"Lambda Role",
+                "Value":{"Ref":"LambdaRole"},
+                "Export":{"Name":"LambdaRole"}
+            }
       }
 
   

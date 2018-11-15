@@ -155,7 +155,7 @@ public  function restPassword(){
                   ),
                      "Source"=>array(
                          "DataType"=>'String',
-                         "StringValue"=>'noreply@'.$_SERVER['HTTP_HOST']
+                         "StringValue"=>C('Source')
                         // "StringValue"=>'northeastern@csye6225-fall2018-likhary.me'
                        ),
                    "ExpirationTime"=>array(

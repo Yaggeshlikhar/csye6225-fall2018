@@ -275,8 +275,11 @@
                     "ReadCapacityUnits" : "5",
                     "WriteCapacityUnits" : "5"
                 },
-                "TableName" : {"Ref":"tableName"}
-                }
+                "TableName" : {"Ref":"tableName"},
+               "TimeToLiveSpecification":{
+			            "AttributeName" : "ExpirationTime",
+  			            "Enabled" : "true"
+		}                }
   },
   "S3Bucket" : {
             "Type" : "AWS::S3::Bucket",

@@ -282,6 +282,13 @@
                 "VPCSecurityGroups":[{"Ref":"DBSecurityGroup"}],
                 "Tags" : [ { "Key" : "Name", "Value" : "My Database" } ]
             }
-  }    
+  },
+  "MySNSTopic": {
+		"Type" : "AWS::SNS::Topic",
+		"Properties":{
+			"TopicName":"LambdaTopic"
+			
+		}
+}
   }
 }

@@ -22,23 +22,20 @@
           "Type":"String"
        }
     },
-
-
-
     "Resources":{  
        "LambdaFunction":{  
           "Type":"AWS::Lambda::Function",
           "Properties":{  
              "Code":{  
-                "S3Bucket":{"Fn::ImportValue" : "S3BucketForLambda"},
+                "S3Bucket": "lambdabucket-yaggesh",
                 "S3Key":{  
                     "Ref":"S3Key"
                 }
              },
              
-              "Handler":"index.handler",
+              "Handler":"exports.handler",
              "Role":{"Ref":"LambdaRole"},
-             "Runtime":"java8",
+             "Runtime":"nodejs8.10",
              "Timeout":"30",
              "TracingConfig":{  
                 "Mode":"Active"
@@ -46,22 +43,6 @@
           }
        
     },
-     "MySNSTopic" : {
-        "Type" : "AWS::SNS::Topic",
-        "Properties" : {
-            "TopicName" : "SampleTopic",
-                "Subscription" : [
-                    {"Endpoint": {
-                    "Fn::GetAtt": [
-                        "LambdaFunction",
-                        "Arn"
-                    ]
-                },
-                "Protocol":"lambda"
-            }
-           ]
-        }
-     },
     
        "LambdaInvokePermission": {
         "Type": "AWS::Lambda::Permission",
@@ -74,7 +55,16 @@
             },
             "Action": "lambda:InvokeFunction",
             "Principal": "sns.amazonaws.com",
-            "SourceArn": {"Ref":"MySNSTopic"}
+            "SourceArn": {"Fn::ImportValue" : "MySNSTopic"}
+            },
+            "DependsOn":"LambdaFunction"
+        },
+        "SNSSubscription":{
+            "Type":"AWS::SNS::Subscription",
+            "Properties":{
+                "TopicArn":{"Fn::ImportValue":"MySNSTopic"},
+                "Endpoint": { "Fn::GetAtt" : [ "LambdaFunction", "Arn" ] },
+                "Protocol":"lambda"
             }
         }
     }

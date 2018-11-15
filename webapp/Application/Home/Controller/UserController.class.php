@@ -121,7 +121,7 @@ public  function restPassword(){
 
 
         $iterator = $dyclient->getIterator('Query', array(
-            'TableName'     => 'Message',
+            'TableName'     => 'csye6225',
             'KeyConditions' => array(
                 'userEmail' => array(
                     'AttributeValueList' => array(

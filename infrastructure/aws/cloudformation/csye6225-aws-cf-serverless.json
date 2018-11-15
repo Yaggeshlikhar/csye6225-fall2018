@@ -20,14 +20,18 @@
        "S3Key":{  
           "Description":"TZip file",
           "Type":"String"
-       }
+       },
+        "S3Bucket":{
+             "Description":"S3Bucket",
+            "Type":"String"
+        }
     },
     "Resources":{  
        "LambdaFunction":{  
           "Type":"AWS::Lambda::Function",
           "Properties":{  
              "Code":{  
-                "S3Bucket": "lambdabucket-yaggesh",
+                "S3Bucket": {"Ref":"S3Bucket"},
                 "S3Key":{  
                     "Ref":"S3Key"
                 }

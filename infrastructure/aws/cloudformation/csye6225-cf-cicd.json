@@ -30,6 +30,8 @@
       "Type": "String",
       "Default": "webapp"
     }
+
+    
   },
   "Resources": {
     "User": {
@@ -319,6 +321,123 @@
           ]
         }
       }
+    },
+
+"LambdaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "LambdaRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/"
+      }
+    },
+
+"EC2ToCloudWatchPolicy" : {
+    "Type" : "AWS::IAM::Policy",
+    "Properties" : {
+      "PolicyName" : "EC2-CloudWatch-Policy",
+      "PolicyDocument":{
+        "Version": "2012-10-17",
+        "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": [
+                "arn:aws:logs:::*"
+            ]
+        }
+    ]
+
+      },
+      "Roles" : [
+        {
+          "Ref" : "LambdaRole"
+        }
+      ]
+
     }
+
+},
+
+"EC2ToDynamoDBPolicy" : {
+    "Type" : "AWS::IAM::Policy",
+    "Properties" : {
+      "PolicyName" : "EC2-DynamoDB-Policy",
+      "PolicyDocument":{
+        "Version": "2012-10-17",
+        "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:*"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:::*"
+            ]
+        }
+    ]
+
+      },
+      "Roles" : [
+        {
+          "Ref" : "LambdaRole"
+        }
+      ]
+
+    }
+
+ },
+
+"EC2ToSESPolicy" : {
+    "Type" : "AWS::IAM::Policy",
+    "Properties" : {
+      "PolicyName" : "EC2-SES-Policy",
+      "PolicyDocument":{
+        "Version": "2012-10-17",
+        "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ses:*"
+            ],
+            "Resource": "*"
+                
+            
+        }
+    ]
+
+      },
+      "Roles" : [
+        {
+          "Ref" : "LambdaRole"
+        }
+      ]
+
+    }
+
+ }
+
+
+
   }
 }

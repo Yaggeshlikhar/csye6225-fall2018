@@ -218,6 +218,26 @@
                                 ]
                             ]
                         },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo TopicArn=",
+                                    {"Ref": "MySNSTopic"},
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo EMAIL_SOURCE=noreply@",
+                                    {"Ref" : "domainName"},
+                                    " >> .env"
+                                ]
+                            ]
+                        },
                          {
                             "Fn::Join": [
                                 "",
@@ -265,6 +285,12 @@
                 "BucketName" : {"Ref":"domainName"}
             }
   },
+     "MySNSTopic" : {
+        "Type" : "AWS::SNS::Topic",
+        "Properties" : {
+            "TopicName" : "SampleTopic"
+        }
+     },
   "RDSInstance" : {
             "Type" : "AWS::RDS::DBInstance",
             "Properties" : {
@@ -283,5 +309,13 @@
                 "Tags" : [ { "Key" : "Name", "Value" : "My Database" } ]
             }
   }
-  }
+  },
+
+  "Outputs":{
+            "MySNSTopic":{
+                "Description":"The VPC ID to use for EC2 instance",
+                "Value":{"Ref":"MySNSTopic"},
+                "Export":{ "Name" : "MySNSTopic"}
+            }
+        }
 }

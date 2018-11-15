@@ -8,7 +8,17 @@
 
 namespace Home\Controller;
 
+
+
+use Aws\AwsClient;
+use Aws\DynamoDb\DynamoDbClient;
+use Aws\DynamoDb\Exception\DynamoDbException;
+use Aws\DynamoDb\Marshaler;
+use Aws\Sdk;
+use Aws\Ses\SesClient;
+use Aws\Sns\SnsClient;
 use Think\Controller;
+
 
 class UserController extends Controller
 {
@@ -88,6 +98,94 @@ class UserController extends Controller
             }
         }
     }
+
+public  function restPassword(){
+     $provider = \Aws\Credentials\CredentialProvider::defaultProvider();
+     
+     $where['userid']  = I('session.userid');
+     $tb_user =M('user');
+     $res = $tb_user->where($where)->find();
+     if (!isset($res)){
+         $this->ajaxReturn(json_style(500,"untype error",10004));
+     }
+     $email = $res['email'];
+
+      $dyclient =DynamoDbClient::factory(
+          array(
+              'credentials' => $provider,
+              'region'   => 'us-east-1',
+              'version'  => 'latest'
+          )
+
+        );
+
+
+        $iterator = $dyclient->getIterator('Query', array(
+            'TableName'     => 'csye6225',
+            'KeyConditions' => array(
+                'userEmail' => array(
+                    'AttributeValueList' => array(
+                        array('S' => $email)
+                    ),
+                    'ComparisonOperator' => 'EQ'
+                )
+
+            )
+        ));
+
+
+            $snsclient =SnsClient::factory(
+                array(
+                    'credentials' => $provider,
+                    'version' => 'latest',
+                    'region'  => 'us-east-1'
+                )
+            );
+
+        $i =0;
+        $link ="";
+        foreach ($iterator as $item) {
+            $link = $item['message']['S'];
+            $i++;
+            break;
+        }
+;
+        if($i==0){
+
+          $token = $this->getRandomString(30);
+          $response = $snsclient->publish(
+          array(
+              'TopicArn'=>C('TopicArn'),
+              'Message'=>'http://'.$_SERVER['HTTP_HOST'].'/reset/email/'.$email.'/token/'.$token,
+              'Subject'=>'Set Password',
+              'MessageAttributes'=>array(
+                      'EmailAddress'=>array(
+                      "DataType"=>'String',
+                      "StringValue"=>$email
+                  ),
+                     "Source"=>array(
+                         "DataType"=>'String',
+                         "StringValue"=>C('Source')
+                        // "StringValue"=>'northeastern@csye6225-fall2018-likhary.me'
+                       ),
+                   "ExpirationTime"=>array(
+                      "DataType"=>'String',
+                      "StringValue"=>20*60
+                  ),
+                  "Token"=>array(
+                      "DataType"=>'String',
+                      "StringValue"=>$token
+                  )
+
+
+              )
+          )
+
+      );
+        }
+
+    }
+
 
     public function getRandomString($len, $chars = null)
     {

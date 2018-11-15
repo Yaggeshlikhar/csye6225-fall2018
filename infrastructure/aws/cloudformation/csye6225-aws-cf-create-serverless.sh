@@ -4,19 +4,20 @@ Valid=$(aws cloudformation  validate-template --template-body file://csye6225-aw
 if [ $? -ne "0" ]
 then
   echo $Valid
+
   echo "$Stack CloudFormation Template NOT VALID."
   exit 1
 else
   echo "CloudFormation Template is VALID.Proceeding.."
 fi
 
-
+aws_domain_name=$(aws route53 list-hosted-zones --query 'HostedZones[0].Name' --output text)
 Role=$(aws iam get-role --role-name LambdaRole --query Role.{Arn:Arn} --output text)
+
 echo "Role= $Role" $'\n'
 
 create=$(aws cloudformation create-stack --stack-name $stackName --template-body file://csye6225-aws-cf-serverless.json --capabilities CAPABILITY_NAMED_IAM \
-  --parameters ParameterKey=DeployBucket,ParameterValue=code-deploy$hostedZoneName.csye6225.com ParameterKey=TravisUser,ParameterValue=$TravisUser \
-  ParameterKey=S3Bucket,ParameterValue=lambda.bucket$hostedZoneName.csye6225.com ParameterKey=S3Key,ParameterValue=lambdafunction.zip ParameterKey=Mail,ParameterValue=$Mail)
+  --parameters  ParameterKey=S3Key,ParameterValue=lambdafunction.zip  ParameterKey=LambdaRole,ParameterValue=$Role)
 
 
 
@@ -28,16 +29,15 @@ else
  echo "EC2 and RDS instance Creation was Successful"
 fi
 
-Complete=$(aws cloudformation wait stack-create-complete --stack-name $Stack)
+Complete=$(aws cloudformation wait stack-create-complete --stack-name $stackName)
 
 
 if [[ -z "$Complete" ]]
 then
-  echo "$Stack stack is created successfully."
+  echo "$stackName stack is created successfully."
 
 else
   echo "$Complete"
-  echo "Creation of $Stack stack failed. Try again."
-  
+  echo "Creation of $stackName stack failed. Try again."
   exit 1
 fi

@@ -100,27 +100,22 @@ class UserController extends Controller
     }
 
 public  function restPassword(){
-     $provider = \Aws\Credentials\CredentialProvider::defaultProvider();
      
-     $where['userid']  = I('session.userid');
-     $tb_user =M('user');
-     $res = $tb_user->where($where)->find();
-     if (!isset($res)){
-         $this->ajaxReturn(json_style(500,"untype error",10004));
-     }
-     $email = $res['email'];
-
-      $dyclient =DynamoDbClient::factory(
-          array(
+     
+     $where['id']  = I('session.userid',null);
+      if (isset($where['id'])){
+           $provider = \Aws\Credentials\CredentialProvider::defaultProvider();
+           $tb_user =M('user');
+           $res = $tb_user->where($where)->find();
+           $email = $res['email'];
+           $dyclient =DynamoDbClient::factory(
+            array(
               'credentials' => $provider,
               'region'   => 'us-east-1',
               'version'  => 'latest'
-          )
-
-        );
-
-
-        $iterator = $dyclient->getIterator('Query', array(
+            )
+           );
+            $iterator = $dyclient->getIterator('Query', array(
             'TableName'     => 'csye6225',
             'KeyConditions' => array(
                 'userEmail' => array(
@@ -132,16 +127,7 @@ public  function restPassword(){
 
             )
         ));
-
-
-            $snsclient =SnsClient::factory(
-                array(
-                    'credentials' => $provider,
-                    'version' => 'latest',
-                    'region'  => 'us-east-1'
-                )
-            );
-
+         
         $i =0;
         $link ="";
         foreach ($iterator as $item) {
@@ -149,12 +135,17 @@ public  function restPassword(){
             $i++;
             break;
         }
-;
         if($i==0){
-
-          $token = $this->getRandomString(30);
-          $response = $snsclient->publish(
-          array(
+          $snsclient =SnsClient::factory(
+                array(
+                    'credentials' => $provider,
+                    'version' => 'latest',
+                    'region'  => 'us-east-1'
+                )
+            );
+            $token = $this->getRandomString(30);
+           $response = $snsclient->publish(
+             array(
               'TopicArn'=>C('TopicArn'),
               'Message'=>'http://'.$_SERVER['HTTP_HOST'].'/reset/email/'.$email.'/token/'.$token,
               'Subject'=>'Set Password',
@@ -181,9 +172,15 @@ public  function restPassword(){
               )
           )
 
-      );
-        }
-
+      );  
+        }else{
+        $this->ajaxReturn(json_style(200,"you have already recieve a email before",10004));
+        } 
+     }else{
+         $this->ajaxReturn(json_style(500,"please login first",10004));
+     }
+   
+ 
     }
 
 

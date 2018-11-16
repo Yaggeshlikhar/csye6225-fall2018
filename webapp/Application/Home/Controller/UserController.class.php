@@ -102,8 +102,8 @@ class UserController extends Controller
 public  function restPassword(){
      
      
-     $where['userid']  = I('session.userid',null);
-      if (isset($where['userid'])){
+     $where['id']  = I('session.userid',null);
+      if (isset($where['id'])){
            $provider = \Aws\Credentials\CredentialProvider::defaultProvider();
            $tb_user =M('user');
            $res = $tb_user->where($where)->find();

@@ -42,6 +42,78 @@
         }
       }
     },
+
+"RoleForEC2Instance": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "CodeDeploy_EC2_Service_Role",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                	"ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+              	"sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+        ],
+        "Path": "/",
+    "Policies": [
+                    {
+                        "PolicyName": "Ec2_sns",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "sns:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }		
+                    }
+                ]
+      }
+    },
+
+"CodeDeployServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "CodeDeployServiceRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "codedeploy.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole",
+          "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambda"
+        ],
+        "Path": "/"
+      }
+    },
+
     "TravisDeployToS3Policy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -191,55 +263,8 @@
       },
       "DependsOn": "User"
     },
-    "CodeDeployServiceRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "RoleName": "CodeDeployServiceRole",
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "codedeploy.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "ManagedPolicyArns": [
-          "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-        ],
-        "Path": "/"
-      }
-    },
-    "RoleForEC2Instance": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "RoleName": "CodeDeploy_EC2_DEPLOY_INSTANCE",
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "ec2.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Path": "/"
-      }
-    },
+    
+    
 
     "RolePolicies": {
             "Type": "AWS::IAM::Policy",
@@ -331,30 +356,11 @@
                     ]
                 },
                 "ManagedPolicyArns": [
-                    "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambda"
+                    "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambda",
+                    "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
                 ],
                 "Path": "/",
                 "Policies": [
-                    {
-                        "PolicyName": "Ec2_Cloudwatch",
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Effect": "Allow",
-                                    "Action": [
-                                        "logs:CreateLogGroup",
-                                        "logs:CreateLogStream",
-                                        "logs:PutLogEvents",
-                                        "logs:DescribeLogStreams"
-                                    ],
-                                    "Resource": [
-                                        "arn:aws:logs:::*"
-                                    ]
-                                }
-                            ]
-                        }
-                    },
                     {
                         "PolicyName": "Ec2_sns",
                         "PolicyDocument": {
@@ -366,7 +372,7 @@
                                     "Resource": "*"
                                 }
                             ]
-                        }
+                        }		
                     }
                 ]
             }
@@ -382,9 +388,7 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": "lambda.amazonaws.com"
               },
               "Action": [
                 "sts:AssumeRole"
@@ -393,9 +397,11 @@
           ]
         },
         "ManagedPolicyArns": [
+        			"arn:aws:iam::aws:policy/AWSLambdaFullAccess",
+        			"arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+        			"arn:aws:iam::aws:policy/AmazonSESFullAccess",
                     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-                    "arn:aws:iam::aws:policy/AmazonSESFullAccess",
-                    "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+                    "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
                 ],
         "Path": "/",
     "Policies": [
@@ -421,7 +427,13 @@
                                     "Resource": [
                                         "arn:aws:dynamodb:us-east-1::table/"
                                     ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "sns:*",
+                                    "Resource": "*"
                                 }
+                                
                             ]
                         }
                     }

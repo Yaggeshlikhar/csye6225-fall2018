@@ -33,7 +33,7 @@
                 }
              },
              
-              "Handler":"exports.handler",
+              "Handler":"index.handler",
              "Role":{"Ref":"LambdaRole"},
              "Runtime":"nodejs8.10",
              "Timeout":"30",

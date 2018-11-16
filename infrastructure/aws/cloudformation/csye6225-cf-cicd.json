@@ -1,4 +1,3 @@
-
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Creates a stack containing an IAM user, role, Three Policies and S3 Bucket",
@@ -542,32 +541,8 @@
 
     }
 
- },
-
-"LambdaToS3Policies": {
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "Lambda-S3-policy",
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "s3:*"
-                            ],
-                            "Resource":"*" 
-                        }
-                    ]
-                },
-                "Roles": [
-                    {
-                        "Ref": "LambdaRole"
-                    }
-                ]
-            }
-        }
-  },
+ }
+},
 
 "Outputs" : {
        

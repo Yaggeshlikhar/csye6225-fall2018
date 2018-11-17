@@ -64,7 +64,8 @@
         },
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-          "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+	  "arn:aws:iam::aws:policy/CloudWatchAgentAdminPolicy"
         ],
         "Path": "/",
     "Policies": [

@@ -24,10 +24,11 @@ class UserController extends Controller
 {
 
    public  function  ag(){
-
-         $st = ststad();
-         $st->increment("ag");
-
+    $metrics = ststad();
+    $metrics->increment('foo.bar');
+    $metrics->decrement('foo.baz');
+    $metrics->measure('foo', rand(1, 10));
+    $metrics->flush();
    }
 
 

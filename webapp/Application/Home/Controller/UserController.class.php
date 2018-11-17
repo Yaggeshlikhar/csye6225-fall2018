@@ -23,16 +23,6 @@ use Think\Controller;
 class UserController extends Controller
 {
 
-   public  function  ag(){
-    $metrics = ststad();
-    $metrics->increment('foo.bar');
-    
-    $metrics->flush();
-      //$metrics->decrement('foo.baz');
-    //$metrics->measure('foo', rand(1, 10));
-   }
-
-
     //login API
     public function login()
     {
@@ -109,7 +99,9 @@ class UserController extends Controller
     }
 
 public  function restPassword(){
-     
+         $metrics = ststad();
+         $metrics->increment('resetPassword');
+         //$metrics->flush();
      
      $where['id']  = I('session.userid',null);
       if (isset($where['id'])){

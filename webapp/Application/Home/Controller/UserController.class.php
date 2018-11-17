@@ -25,7 +25,8 @@ class UserController extends Controller
 
    public  function  ag(){
 
-    createUser();
+         $st = ststad();
+         $st->increment("ag");
 
    }
 
@@ -33,6 +34,8 @@ class UserController extends Controller
     //login API
     public function login()
     {
+        $st = ststad();
+        $st->increment("login");
         if (!IS_POST) {
             $this->ajaxReturn(json_style(400, "bad request, incorrect submit method", 10015));
         }
@@ -67,6 +70,8 @@ class UserController extends Controller
     // register API
     public function register()
     {
+        $st = ststad();
+        $st->increment("register");
         if (!IS_POST) {
             $this->ajaxReturn(json_style(400, "bad request, incorrect submit method", 10015));
         }

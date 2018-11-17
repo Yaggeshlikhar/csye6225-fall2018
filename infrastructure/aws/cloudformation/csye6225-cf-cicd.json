@@ -1,4 +1,3 @@
-
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Creates a stack containing an IAM user, role, Three Policies and S3 Bucket",
@@ -279,7 +278,19 @@
                                 "s3:*"
                             ],
                             "Resource":"*" 
-                        }
+                        },{
+                            "Effect": "Allow",
+                            "Action": [
+                                "cloudwatch:PutMetricData",
+                                "ec2:DescribeTags",
+                                "logs:PutLogEvents",
+                                "logs:DescribeLogStreams",
+                                "logs:DescribeLogGroups",
+                                "logs:CreateLogStream",
+                                "logs:CreateLogGroup"
+                            ],
+                            "Resource": "*"
+                        } 
                     ]
                 },
                 "Roles": [

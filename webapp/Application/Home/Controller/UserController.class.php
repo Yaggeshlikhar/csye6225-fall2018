@@ -101,7 +101,7 @@ class UserController extends Controller
 public  function restPassword(){
          $metrics = ststad();
          $metrics->increment('resetPassword');
-         //$metrics->flush();
+         $metrics->flush();
      
      $where['id']  = I('session.userid',null);
       if (isset($where['id'])){

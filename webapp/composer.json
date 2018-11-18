@@ -14,7 +14,8 @@
     "require": {
         "php": ">=5.3.0",
         "aws/aws-sdk-php": "^3.0@dev",
-        "vlucas/phpdotenv":  "2.5.1"
+        "vlucas/phpdotenv":  "2.5.1",
+        "beberlei/metrics":"2.7.0"
     },
     "minimum-stability": "dev"
 }

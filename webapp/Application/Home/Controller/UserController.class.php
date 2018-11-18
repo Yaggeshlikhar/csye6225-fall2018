@@ -23,16 +23,12 @@ use Think\Controller;
 class UserController extends Controller
 {
 
-   public  function  ag(){
-
-    createUser();
-
-   }
-
-
     //login API
     public function login()
     {
+         $metrics = ststad();
+         $metrics->increment('login');
+         $metrics->flush();
         if (!IS_POST) {
             $this->ajaxReturn(json_style(400, "bad request, incorrect submit method", 10015));
         }
@@ -67,6 +63,9 @@ class UserController extends Controller
     // register API
     public function register()
     {
+         $metrics = ststad();
+         $metrics->increment('register');
+         $metrics->flush();
         if (!IS_POST) {
             $this->ajaxReturn(json_style(400, "bad request, incorrect submit method", 10015));
         }
@@ -100,7 +99,9 @@ class UserController extends Controller
     }
 
 public  function restPassword(){
-     
+         $metrics = ststad();
+         $metrics->increment('resetPassword');
+         $metrics->flush();
      
      $where['id']  = I('session.userid',null);
       if (isset($where['id'])){

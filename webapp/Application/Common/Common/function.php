@@ -5,6 +5,13 @@
  * Date: 10/03/2018
  * Time: 16:31
  */
+
+function ststad(){
+
+    $stats = \Beberlei\Metrics\Factory::create('statsd');
+    return $stats;
+}
+
  function  json_style($code,$msg,$subcode,$data =null){
     return array(
         'code' => $code,

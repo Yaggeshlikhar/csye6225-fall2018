@@ -156,7 +156,7 @@
                             "sudo yum update -y",
                             "sudo yum install  ruby ntp wget  -y",
                             "sudo systemctl start ntpd",
-                            "sudo systemctl enable ntpd",  
+                            "sudo systemctl enable ntpd",          
                             "wget https://www.apachefriends.org/xampp-files/5.6.38/xampp-linux-x64-5.6.38-0-installer.run",
                             "chmod 755 xampp-linux-x64-5.6.38-0-installer.run", 
                             "yes|sudo ./xampp-linux-x64-5.6.38-0-installer.run",
@@ -247,8 +247,28 @@
                                     " >> .env"
                                 ]
                             ]
-                        }
-              
+                        },
+                           "cd /home/centos/",      
+			                     "sudo yum install httpd -y",
+			                     "sudo yum install unzip -y",				
+			                     "sudo mkdir -p /var/awslogs/etc/",	
+			                     "cd /var/awslogs/etc/",
+                           "sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/linux/amd64/latest/AmazonCloudWatchAgent.zip",
+                           "sudo unzip AmazonCloudWatchAgent.zip",
+                           "sudo chmod +x install.sh",
+                           "sudo sh install.sh",
+                           "sudo mkdir -p /usr/share/collectd",
+                           "cd /usr/share/collectd",
+                           "sudo touch types.db",
+                           "cd /opt/aws/amazon-cloudwatch-agent/bin/",
+                           "sudo touch config.json",
+                           "sudo chmod 777 config.json",  
+			   "sudo chmod 777 /opt/lampp/logs/access_log", 	
+                           "sudo echo '{\"agent\": {\"metrics_collection_interval\": 10,\"logfile\": \"/var/logs/amazon-cloudwatch-agent.log\"},\"logs\": {\"logs_collected\": {\"files\": {\"collect_list\": [{\"file_path\": \"/opt/lampp/logs/error_log\",\"log_group_name\": \"csye6225_fall2018\",\"log_stream_name\": \"webapp\",\"timestamp_format\": \"%H:%M:%S %y %b %-d\"}]}}},\"metrics\": {\"metrics_collected\": {\"statsd\": {\"service_address\": \":8125\",\"metrics_collection_interval\": 10,\"metrics_aggregation_interval\": 0}}}}' >> config.json",
+                           "cd /opt/aws/amazon-cloudwatch-agent/bin",
+                           "sudo ./amazon-cloudwatch-agent-ctl -m ec2 -a fetch-config -c file:config.json -s",
+			                     "sudo systemctl stop amazon-cloudwatch-agent.service",
+                           "sudo systemctl restart amazon-cloudwatch-agent.service"
                         ]
                       ]
                  }
@@ -275,7 +295,12 @@
                     "ReadCapacityUnits" : "5",
                     "WriteCapacityUnits" : "5"
                 },
-                "TableName" : {"Ref":"tableName"}
+                "TableName" : {"Ref":"tableName"},
+		"TimeToLiveSpecification" :{
+			"AttributeName" : "ExpirationTime",
+  			"Enabled" : "true"
+}
+
                 }
   },
   "S3Bucket" : {

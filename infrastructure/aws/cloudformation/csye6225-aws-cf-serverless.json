@@ -20,6 +20,10 @@
        "S3Key":{  
           "Description":"TZip file",
           "Type":"String"
+       },
+"domain":{  
+          "Description":"TZip file",
+          "Type":"String"
        }
     },
     "Resources":{  
@@ -27,7 +31,16 @@
           "Type":"AWS::Lambda::Function",
           "Properties":{  
              "Code":{  
-                "S3Bucket": "lambdabucket-yaggesh",
+                "S3Bucket": {  "Fn::Join":[
+		    "",
+		   [
+		    "lambda",
+		    {
+                    "Ref":"domain"
+		    }
+		   ]
+		  ]
+                },
                 "S3Key":{  
                     "Ref":"S3Key"
                 }
@@ -70,4 +83,3 @@
     }
     
  }
-

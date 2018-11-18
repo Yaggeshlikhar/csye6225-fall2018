@@ -18,6 +18,9 @@ class AttachmentController extends FortranscationController
     public function createAttachfile()
     {
 
+         $metrics = ststad();
+         $metrics->increment('createAttachfile');
+         $metrics->flush();
         $this->ifRightsubmit(2);
         $transactionid = I('get.transactionid', null);
         if (!isset($transactionid)) {
@@ -55,6 +58,9 @@ class AttachmentController extends FortranscationController
     //Get list of files attached to the transaction
     public function listAttachement()
     {
+        $metrics = ststad();
+         $metrics->increment('listAttachement');
+         $metrics->flush();
         $this->ifRightsubmit(1);
         $transactionid = I('get.transactionid', null);
         if (!isset($transactionid)) {
@@ -72,6 +78,9 @@ class AttachmentController extends FortranscationController
     //Update file attached to the transactio
     public function updateAttachment()
     {
+        $metrics = ststad();
+         $metrics->increment('updateAttachment');
+         $metrics->flush();
         $this->ifRightsubmit(2);
         $transactionid = I('get.transactionid', null);
         $attachmentid = I('post.attachmentid', null);
@@ -121,7 +130,9 @@ class AttachmentController extends FortranscationController
 
     //Delete
     public  function  deleteAttachment(){
-
+      $metrics = ststad();
+         $metrics->increment('deleteAttachment');
+         $metrics->flush();
         $this->ifRightsubmit(4);
         $putData = file_get_contents("php://input");
         $resultData = json_decode($putData,true);

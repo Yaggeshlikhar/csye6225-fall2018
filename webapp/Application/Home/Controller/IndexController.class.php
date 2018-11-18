@@ -1,21 +1,15 @@
 <?php
 namespace Home\Controller;
+use Common\Controller\CommonController;
 use Think\Controller;
-class IndexController extends Controller {
+class IndexController extends CommonController {
 
     public function index(){
-    $token = I('get.tokenID', null);
-    if (isset($token)){
-     if ($token != I('session.tokenID',null)){
-         $this->ajaxReturn(json_style(1,"please relogin",10010));
-     }else{
+        $st = ststad();
+        $st->increment("home");  
+         $st->flush();
+    $this->ajaxReturn(json_style(1,'has login',20000,array('currentTime'=>date('y-m-d h:i:s',time()))));
 
-      $this->ajaxReturn(json_style(1,'has login',20000,array('currentTime'=>date('y-m-d h:i:s',time()))));
-     }
-
-    }else{
-        $this->ajaxReturn(json_style(1,"sorry you must login first",10010));
-    }
     }
 
 

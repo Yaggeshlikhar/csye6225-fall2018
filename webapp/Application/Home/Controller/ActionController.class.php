@@ -15,6 +15,9 @@ class ActionController extends FortranscationController{
 
     //create transcation API
     public function  createTransaction(){
+         $metrics = ststad();
+         $metrics->increment('createTransaction');
+         $metrics->flush();
         $this->ifRightsubmit(2);
         $postData = file_get_contents("php://input");
         $resultData = json_decode($postData,true);
@@ -41,7 +44,9 @@ class ActionController extends FortranscationController{
 
     //retrive tanscation
     public  function  retrieveTransaction(){
-
+        $metrics = ststad();
+         $metrics->increment('retrieveTransaction');
+         $metrics->flush();
     $this->ifRightsubmit(1);
      $where['userid'] =I('session.userid');
      createTransaction();
@@ -53,6 +58,9 @@ class ActionController extends FortranscationController{
 
     //update transcation
     public  function  updateTransaction(){
+        $metrics = ststad();
+         $metrics->increment('updateTransaction');
+         $metrics->flush();
         $this->ifRightsubmit(3);
         $putData = file_get_contents("php://input");
         $resultData = json_decode($putData,true);
@@ -79,6 +87,9 @@ class ActionController extends FortranscationController{
 
     //delete transcation
     public  function  deleteTransaction(){
+         $metrics = ststad();
+         $metrics->increment('deleteTransaction');
+         $metrics->flush();
         $this->ifRightsubmit(4);
         $deleteData = file_get_contents("php://input");
         $resultData = json_decode($deleteData,true);

@@ -1,0 +1,556 @@
+{
+"AWSTemplateFormatVersion" : "2010-09-09",
+"Description" : "Application-Infrastructure",
+"Parameters":{
+   
+        "domainName":{
+            "Type":"String"
+        },
+        "tableName":{
+            "Type":"String",
+            "Default":"csye6225"
+        },
+        "dbName":{
+            "Type":"String",
+            "Default":"csye6225"
+        },
+        "dbInstanceIdentifier":{
+            "Type":"String",
+            "Default":"csye6225-spring2018"
+        },
+        "dbUsername":{
+            "Type":"String",
+            "Default":"csye6225master"
+        },
+        "dbPassword":{
+            "Type":"String",
+            "Default":"csye6225password"
+        },
+        "Profile":{
+            "Type" : "String"
+         },
+	       "SSLArn" : {
+            "Description" : "SSL Arn",
+            "Type" : "String"
+          },
+         
+         "CodeDeployServiceRole" : {
+             "Description" : "Application Name",
+             "Type" : "String"
+            },
+	       "subnet1" : {
+		     "Description":"subnet id",
+		     "Type":"String"
+          }
+    },
+
+"Resources":{
+     "WebServerGroup" : {
+      "Type" : "AWS::AutoScaling::AutoScalingGroup",
+      "Properties" : {
+        "VPCZoneIdentifier" : [{"Fn::ImportValue":"PublicSubnetID1"},{"Fn::ImportValue":"PublicSubnetID2"},{"Fn::ImportValue":"PublicSubnetID3"}],
+        "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
+        "MinSize" : "3",
+        "MaxSize" : "10",
+        "DesiredCapacity":"3",
+        "Cooldown":"60",
+        "Tags" : [ {
+         "Key" : "Name",
+         "Value" : "MyEC2Instance",
+         "PropagateAtLaunch" : "true"
+         } ],
+        "TargetGroupARNs" : [ { "Ref" : "ALBTargetGroup" } ]
+      },
+      "DependsOn": "ALBListener"
+    },
+    "LaunchConfig" : {
+      "Type" : "AWS::AutoScaling::LaunchConfiguration",
+      "Properties" : {
+        "AssociatePublicIpAddress":"true",
+        "KeyName" : "one",
+        "ImageId" : "ami-9887c6e7",
+        "SecurityGroups":[{"Ref":"WebServerSecurityGroup"}],
+        "InstanceType" : "t2.micro",
+        "IamInstanceProfile": {"Ref":"Profile"},
+        "BlockDeviceMappings" : [
+               {
+                  "DeviceName" : "/dev/sda1",
+                  "Ebs" : {
+                     "VolumeType" : "gp2",
+                     "DeleteOnTermination" : "true",
+                     "VolumeSize" : "20"
+                  }
+               }],
+       
+        "UserData": {
+                "Fn::Base64": {
+                      "Fn::Join":[
+                         "\n",
+                        [
+                           "#!/bin/bash -xe",
+                            "sudo yum update -y",
+                            "sudo yum install  ruby ntp wget  -y",
+                            "sudo systemctl start ntpd",
+                            "sudo systemctl enable ntpd",          
+                            "wget https://www.apachefriends.org/xampp-files/5.6.38/xampp-linux-x64-5.6.38-0-installer.run",
+                            "chmod 755 xampp-linux-x64-5.6.38-0-installer.run", 
+                            "yes|sudo ./xampp-linux-x64-5.6.38-0-installer.run",
+                           
+                            "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
+                            "sudo chmod +x ./install",
+                            "sudo ./install auto",
+                            "sudo service codedeploy-agent start",
+                            "sudo service codedeploy-agent status",
+                            "cd /",
+                            "cd opt/lampp/etc",
+                            "sudo chmod 777 httpd.conf",
+                            "echo Include etc/extra/httpd-vhosts.conf >> httpd.conf",
+                           {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "export DomainName=",
+                                   "www.",
+                                   {"Ref" : "domainName"}
+                                ]
+                            ]
+                        },
+                           
+                            "cd extra",
+                            "sudo chmod 777 httpd-vhosts.conf",
+                            "echo \\<VirtualHost *:80\\> >> httpd-vhosts.conf",
+                            "echo  ServerAdmin webmaster@dummy-host2.example.com >> httpd-vhosts.conf",
+                            "echo  DocumentRoot \"/opt/lampp/htdocs\" >> httpd-vhosts.conf",
+                            "echo  ServerName $DomainName >> httpd-vhosts.conf",
+                            "echo  ErrorLog \"logs/dummy-host.example.com-error_log\" >> httpd-vhosts.conf",
+                            "echo  CustomLog \"logs/dummy-host.example.com-access_log\" common >> httpd-vhosts.conf",
+                            "echo \\<\/VirtualHost\\> >> httpd-vhosts.conf",
+                            "cd /",
+                            "cd /opt/lampp",
+                            "sudo rm -rf htdocs",
+                            "sudo mkdir htdocs",
+                            "sudo chmod 777 htdocs",
+                            "cd htdocs",
+                            "touch .env",
+                            "sudo chmod 777 .env",
+                           "echo DB_USER=csye6225master >> .env",
+                           "echo DB_PWD=csye6225password >> .env",
+                           "echo DB_PORT=3306 >> .env",
+                           "echo DB_NAME=csye6225 >> .env",
+                            
+                           {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo DB_HOST=",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "RDSInstance",
+                                            "Endpoint.Address"
+                                        ]
+                                    },
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo TopicArn=",
+                                    {"Ref": "MySNSTopic"},
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo EMAIL_SOURCE=noreply@",
+                                    {"Ref" : "domainName"},
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                         {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "echo S3_NAME=",
+                                    {"Ref" : "domainName"},
+                                    " >> .env"
+                                ]
+                            ]
+                        },
+                           "cd /home/centos/",      
+                                 "sudo yum install httpd -y",
+                                 "sudo yum install unzip -y",               
+                                 "sudo mkdir -p /var/awslogs/etc/", 
+                                 "cd /var/awslogs/etc/",
+                           "sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/linux/amd64/latest/AmazonCloudWatchAgent.zip",
+                           "sudo unzip AmazonCloudWatchAgent.zip",
+                           "sudo chmod +x install.sh",
+                           "sudo sh install.sh",
+                           "sudo mkdir -p /usr/share/collectd",
+                           "cd /usr/share/collectd",
+                           "sudo touch types.db",
+                           "cd /opt/aws/amazon-cloudwatch-agent/bin/",
+                           "sudo touch config.json",
+                           "sudo chmod 777 config.json",  
+                           "sudo chmod 777 /opt/lampp/logs/access_log",     
+                           "sudo echo '{\"agent\": {\"metrics_collection_interval\": 10,\"logfile\": \"/var/logs/amazon-cloudwatch-agent.log\"},\"logs\": {\"logs_collected\": {\"files\": {\"collect_list\": [{\"file_path\": \"/opt/lampp/logs/access_log\",\"log_group_name\": \"csye6225_fall2018\",\"log_stream_name\": \"Apache_access_log\",\"timestamp_format\": \"%H:%M:%S %y %b %-d\"},{\"file_path\": \"/opt/lampp/logs/error_log\",\"log_group_name\": \"csye6225_fall2018\",\"log_stream_name\": \"error_log\",\"timestamp_format\": \"%H:%M:%S %y %b %-d\"}]}}},\"metrics\": {\"metrics_collected\": {\"statsd\": {\"service_address\": \":8125\",\"metrics_collection_interval\": 10,\"metrics_aggregation_interval\": 0}}}}' >> config.json",
+                           "cd /opt/aws/amazon-cloudwatch-agent/bin",
+                           "sudo ./amazon-cloudwatch-agent-ctl -m ec2 -a fetch-config -c file:config.json -s",
+                                 "sudo systemctl stop amazon-cloudwatch-agent.service",
+                           "sudo systemctl restart amazon-cloudwatch-agent.service"
+                        ]
+                      ]
+                 }
+            } 
+         },
+         "DependsOn":"RDSInstance"
+         
+    },
+    "WebServerScaleUpPolicy": {
+    "Type": "AWS::AutoScaling::ScalingPolicy",
+    "Properties": {
+      "AdjustmentType": "ChangeInCapacity",
+      "AutoScalingGroupName": {
+        "Ref": "WebServerGroup"
+      },
+      "Cooldown": "60",
+      "ScalingAdjustment": "1"
+    }
+  },
+  "WebServerScaleDownPolicy": {
+    "Type": "AWS::AutoScaling::ScalingPolicy",
+    "Properties": {
+      "AdjustmentType": "ChangeInCapacity",
+      "AutoScalingGroupName": {
+        "Ref": "WebServerGroup"
+      },
+      "Cooldown": "60",
+      "ScalingAdjustment": "-1"
+    }
+  },
+   "CPUAlarmHigh": {
+    "Type": "AWS::CloudWatch::Alarm",
+    "Properties": {
+      "AlarmDescription": "Scale-up if CPU > 90% for 10 minutes",
+      "MetricName": "CPUUtilization",
+      "Namespace": "AWS/EC2",
+      "Statistic": "Average",
+      "Period": "300",
+      "EvaluationPeriods": "2",
+      "Threshold": "90",
+      "AlarmActions": [
+        {
+          "Ref": "WebServerScaleUpPolicy"
+        }
+      ],
+      "Dimensions": [
+        {
+          "Name": "AutoScalingGroupName",
+          "Value": {
+            "Ref": "WebServerGroup"
+          }
+        }
+      ],
+      "ComparisonOperator": "GreaterThanThreshold"
+    }
+  },
+  "CPUAlarmLow": {
+    "Type": "AWS::CloudWatch::Alarm",
+    "Properties": {
+      "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+      "MetricName": "CPUUtilization",
+      "Namespace": "AWS/EC2",
+      "Statistic": "Average",
+      "Period": "300",
+      "EvaluationPeriods": "2",
+      "Threshold": "70",
+      "AlarmActions": [
+        {
+          "Ref": "WebServerScaleDownPolicy"
+        }
+      ],
+      "Dimensions": [
+        {
+          "Name": "AutoScalingGroupName",
+          "Value": {
+            "Ref": "WebServerGroup"
+          }
+        }
+      ],
+      "ComparisonOperator": "LessThanThreshold"
+    }
+  },
+    "ApplicationLoadBalancer" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::LoadBalancer",
+        "Properties" : {
+          "Name":"ApplicationLoadBalancer",
+          "Subnets" : [{"Fn::ImportValue":"PublicSubnetID1"},{"Fn::ImportValue":"PublicSubnetID2"},{"Fn::ImportValue":"PublicSubnetID3"}],
+          "SecurityGroups": [{"Ref": "LoadBalancerSecurityGroup"}],
+          "Type": "application",
+          "IpAddressType": "ipv4"
+        }
+      },
+	
+	"ALBListener" : {
+	    "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+	    "Properties" : {
+            "DefaultActions" : [{
+	            "Type" : "forward",
+	            "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
+	          }],
+	     "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
+	     "Port" : "80",
+             "Protocol" : "HTTP"
+	        }
+      },
+      "ALBListener" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "Type" : "forward",
+            "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
+          }],
+          "Certificates" : [{"CertificateArn":{"Ref" : "SSLArn"}}],
+          "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
+          "Port" : "443",
+          "Protocol" : "HTTPS"
+        }
+      },
+      "ALBTargetGroup" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : "ALBTargetGroup",
+          "HealthCheckIntervalSeconds" : 30,
+          "HealthCheckTimeoutSeconds" : 5,
+          "HealthyThresholdCount" : 3,
+          "Port" : 80,
+          "Protocol" : "HTTP",
+          "UnhealthyThresholdCount" : 5,
+          "TargetGroupAttributes" : [
+              {"Key" : "stickiness.enabled","Value" : "true"}
+          ],
+          "VpcId" : {"Fn::ImportValue" : "VpcID"}
+        }
+      },
+      "WebServerSecurityGroup":{
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+         "GroupDescription":"Creating Security group with ingress rules for webapp",
+         "VpcId":{"Fn::ImportValue" : "VpcID"},
+         "GroupName": "csye6225-webapp",
+         "SecurityGroupIngress" : [
+         			{
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": 22,
+                        "ToPort": 22
+                    },
+ 
+                     {
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": 443,
+                        "ToPort": 443
+                    },
+                    {
+                     "IpProtocol": "tcp",
+                     "CidrIp": "0.0.0.0/0",
+                     "FromPort": 8080,
+                     "ToPort": 8080
+                     },
+ 
+                     {
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": 80,
+                        "ToPort": 80
+                    }
+                   
+        ],
+         "Tags" :  [ {"Key":"Name","Value":"csye6225-web"} ]
+      }
+  },
+   "LoadBalancerSecurityGroup": {
+    "Type": "AWS::EC2::SecurityGroup",
+    "Properties": {
+    "GroupName" : "csye6225-lb-securitygroup",
+     "Tags": [{"Key":"Name","Value":"csye6225-lb-securitygroup"}],
+    "GroupDescription": "Updated for Load Balancer: LB access via port 443 for HTTPS",
+    "VpcId": {"Fn::ImportValue" : "VpcID"},
+    "SecurityGroupIngress": [
+        		{
+                    "IpProtocol": "tcp",
+                    "FromPort": "22",
+                    "ToPort": "22",
+                    "CidrIp": "0.0.0.0/0"
+                },
+                {
+                    "IpProtocol": "tcp",
+                    "FromPort": "80",
+                    "ToPort": "80",
+                    "CidrIp": "0.0.0.0/0"
+                },
+        {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+        }
+    ],
+    "SecurityGroupEgress": [
+                {
+                    "IpProtocol": "tcp",
+                    "FromPort": "80",
+                    "ToPort": "80",
+                    "DestinationSecurityGroupId": {
+                        "Ref": "WebServerSecurityGroup"
+                    }
+                }
+            ]
+}
+},
+  "DBSecurityGroup" : {
+    "Type" : "AWS::EC2::SecurityGroup",
+    "Properties" : {
+       "GroupDescription" : "Creating Security group with ingress rules for webapp",
+       "GroupName": "csye6225-rds",
+       "VpcId" : {"Fn::ImportValue" : "VpcID"},
+       "Tags": [{"Key":"Name","Value":"csye6225-rds"}],
+       "SecurityGroupIngress" : [{
+             "IpProtocol" : "tcp",
+             "FromPort" : "3306",
+             "ToPort" : "3306",
+             "SourceSecurityGroupId" : { "Ref": "WebServerSecurityGroup"}}]}
+  },
+  
+  "PrivateDBSubnetGroup":{
+            "Type":"AWS::RDS::DBSubnetGroup",
+            "Properties":{
+                "DBSubnetGroupDescription":"Private Subnet Group",
+                "SubnetIds":[{"Fn::ImportValue":"PrivateSubnetID1"},{"Fn::ImportValue":"PrivateSubnetID2"},{"Fn::ImportValue":"PrivateSubnetID3"}],
+                "Tags":[{"Key":"Name","Value":"Private DB SubnetGroup"}]
+            }
+  },
+  "myDynamoDBTable" : {
+            "Type" : "AWS::DynamoDB::Table",
+            "Properties" : {
+                "AttributeDefinitions" : [
+                    {
+                        "AttributeName" : "userEmail",
+                        "AttributeType" : "S"
+                    }
+                ],
+                "KeySchema" : [
+                    {
+                        "AttributeName" : "userEmail",
+                        "KeyType" : "HASH"
+                    }
+                ],
+                "ProvisionedThroughput" : {
+                    "ReadCapacityUnits" : "5",
+                    "WriteCapacityUnits" : "5"
+                },
+                "TableName" : {"Ref":"tableName"},
+        "TimeToLiveSpecification" :{
+            "AttributeName" : "ExpirationTime",
+            "Enabled" : "true"
+}
+
+                }
+  },
+  "S3Bucket" : {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+                "AccessControl" : "PublicRead",
+                "BucketName" : {"Ref":"domainName"}
+            }
+  },
+     "MySNSTopic" : {
+        "Type" : "AWS::SNS::Topic",
+        "Properties" : {
+            "TopicName" : "SampleTopic"
+        }
+     },
+  "RDSInstance" : {
+            "Type" : "AWS::RDS::DBInstance",
+            "Properties" : {
+                "AllocatedStorage":"20",
+                "Engine" : "mariadb",
+                
+                "DBName" : {"Ref":"dbName"},
+                "DBInstanceClass" : "db.t2.medium",
+                "MultiAZ":"false",
+                "DBInstanceIdentifier":{"Ref":"dbInstanceIdentifier"},
+                "MasterUsername" : {"Ref":"dbUsername"},
+                "MasterUserPassword" : {"Ref":"dbPassword"},
+                "PubliclyAccessible":"false",
+                "DBSubnetGroupName": {"Ref":"PrivateDBSubnetGroup"},
+                "VPCSecurityGroups":[{"Ref":"DBSecurityGroup"}],
+                "Tags" : [ { "Key" : "Name", "Value" : "My Database" } ]
+            }
+  },
+
+   "CodeDeployApplication": {
+            "Type": "AWS::CodeDeploy::Application",
+            "Properties": {
+                "ApplicationName": "CSYE6225CodeDeployApplication"
+            }
+    },
+     "DeploymentGroup": {
+            "Type": "AWS::CodeDeploy::DeploymentGroup",
+            "Properties": {
+                "ApplicationName": "CSYE6225CodeDeployApplication",
+                "AutoScalingGroups": [{"Ref":"WebServerGroup"}],
+                "DeploymentGroupName": "Codedeploy_groupname",
+                "Ec2TagFilters": [
+                    {
+                        "Key": "Name",
+                        "Type": "KEY_AND_VALUE",
+                        "Value": "MyEC2Instance"
+                    }
+                ],
+                 "LoadBalancerInfo": {
+                    "ElbInfoList": [{
+                        "Name": {"Fn::GetAtt": ["ApplicationLoadBalancer", "LoadBalancerName"]}
+          }]
+        },
+                "ServiceRoleArn": {"Ref":"CodeDeployServiceRole"}
+                
+            }
+        },
+
+         "MyRecordSet": {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "HostedZoneName" : {"Fn::Join" : ["",[{"Ref" : "domainName"},"."]] },
+                "Name": {"Ref" : "domainName"},
+                "Type": "A",
+                "AliasTarget": {
+                    "HostedZoneId" : {"Fn::GetAtt": ["ApplicationLoadBalancer", "CanonicalHostedZoneID"]},
+                    "DNSName": {"Fn::GetAtt": ["ApplicationLoadBalancer", "DNSName"]}
+                }
+            }
+        }
+  },
+
+   "Outputs":{
+            "MySNSTopic":{
+                "Description":"The VPC ID to use for EC2 instance",
+                "Value":{"Ref":"MySNSTopic"},
+                "Export":{ "Name" : "MySNSTopic"}
+            },
+             "URL" : {
+                    "Description" : "The URL of the website",
+                     "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [
+                    "ApplicationLoadBalancer", "DNSName" ]}]]}
+            }
+        }
+
+}
+

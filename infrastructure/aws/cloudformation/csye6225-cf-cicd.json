@@ -315,38 +315,7 @@
         ]
       }
     },
-    "CodeDeployApplication": {
-            "Type": "AWS::CodeDeploy::Application",
-            "Properties": {
-                "ApplicationName": "CSYE6225CodeDeployApplication"
-            }
-    },
-
-    "DeploymentGroup": {
-            "Type": "AWS::CodeDeploy::DeploymentGroup",
-            "Properties": {
-                "ApplicationName": "CSYE6225CodeDeployApplication",
-                "DeploymentGroupName": "Codedeploy_groupname",
-                "DeploymentStyle": {
-                    "DeploymentType": "IN_PLACE",
-                    "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
-                },
-                "Ec2TagFilters": [
-                    {
-                        "Key": "Name",
-                        "Type": "KEY_AND_VALUE",
-                        "Value": "MyEC2Instance"
-                    }
-                ],
-                "ServiceRoleArn": {
-                    "Fn::GetAtt": [
-                        "CodeDeployServiceRole",
-                        "Arn"
-                    ]
-                }
-            }
-        },
-
+    
     "CodeDeployLambdaServiceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -568,7 +537,13 @@
                 "Description":"Lambda Role",
                 "Value":{"Ref":"LambdaRole"},
                 "Export":{"Name":"LambdaRole"}
-            }
+            },
+	"CodeDeployServiceRoleArn" : {
+		"Description" :"Code Deploy Arn",
+		"Value":{
+			"Fn::GetAtt" : ["CodeDeployServiceRole","Arn"]
+		}
+	}
       }
 
   

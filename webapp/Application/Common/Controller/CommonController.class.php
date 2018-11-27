@@ -12,8 +12,8 @@ class CommonController extends Controller {
     //jude if login
     public function _initialize()
     {
-        $token=  I('session.tokenID',null);
-        if (!isset($token)){
+        $userid=  I('session.userid',null);
+        if (!isset($userid)){
             $this->ajaxReturn(json_style(401,"sorry you must login first",10009));
         }
     }

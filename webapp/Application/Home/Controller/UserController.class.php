@@ -46,8 +46,8 @@ class UserController extends Controller
         $res = $tb_user->where($where)->find();
         if (isset($res)) {
             if (password_verify($password, $res['password'])) {
-//                 $token = $this->getRandomString(20);
-//                 $_SESSION['tokenID'] = $token;
+                 $token = $this->getRandomString(20);
+                 $_SESSION['tokenID'] = $token;
                 $_SESSION['userid'] = $res['id'];
                 $this->ajaxReturn(json_style(200, "login success", 10002));
             } else {
@@ -88,8 +88,8 @@ class UserController extends Controller
             $res = $tb_user->add($data);
             if ($res) {
 
-//                 $token = $this->getRandomString(20);
-//                 $_SESSION['tokenID'] = $token;
+                $token = $this->getRandomString(20);
+                 $_SESSION['tokenID'] = $token;
                 $_SESSION['userid'] = $res;
                 $this->ajaxReturn(json_style(200, "Success!!", 10006));
             } else {

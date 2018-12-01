@@ -78,7 +78,7 @@
                   "Ebs" : {
                      "VolumeType" : "gp2",
                      "DeleteOnTermination" : "true",
-                     "VolumeSize" : "20"
+                     "VolumeSize" : "16"
                   }
                }],
        
@@ -209,7 +209,7 @@
                  }
             } 
          },
-         "DependsOn":"RDSInstance"
+         "DependsOn":"I"
          
     },
     "WebServerScaleUpPolicy": {
@@ -237,13 +237,13 @@
    "CPUAlarmHigh": {
     "Type": "AWS::CloudWatch::Alarm",
     "Properties": {
-      "AlarmDescription": "Scale-up if CPU > 90% for 10 minutes",
+      "AlarmDescription": "Scale-up if CPU > 10% for 2 minutes",
       "MetricName": "CPUUtilization",
       "Namespace": "AWS/EC2",
       "Statistic": "Average",
-      "Period": "300",
-      "EvaluationPeriods": "2",
-      "Threshold": "90",
+      "Period": "120",
+      "EvaluationPeriods": "4",
+      "Threshold": "10",
       "AlarmActions": [
         {
           "Ref": "WebServerScaleUpPolicy"
@@ -263,13 +263,13 @@
   "CPUAlarmLow": {
     "Type": "AWS::CloudWatch::Alarm",
     "Properties": {
-      "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+      "AlarmDescription": "Scale-down if CPU < 8% for 2 minutes",
       "MetricName": "CPUUtilization",
       "Namespace": "AWS/EC2",
       "Statistic": "Average",
-      "Period": "300",
-      "EvaluationPeriods": "2",
-      "Threshold": "70",
+      "Period": "120",
+      "EvaluationPeriods": "4",
+      "Threshold": "8",
       "AlarmActions": [
         {
           "Ref": "WebServerScaleDownPolicy"
@@ -292,22 +292,10 @@
           "Name":"ApplicationLoadBalancer",
           "Subnets" : [{"Fn::ImportValue":"PublicSubnetID1"},{"Fn::ImportValue":"PublicSubnetID2"},{"Fn::ImportValue":"PublicSubnetID3"}],
           "SecurityGroups": [{"Ref": "LoadBalancerSecurityGroup"}],
+          "Scheme" : "internet-facing",
           "Type": "application",
           "IpAddressType": "ipv4"
         }
-      },
-	
-	"ALBListener" : {
-	    "Type" : "AWS::ElasticLoadBalancingV2::Listener",
-	    "Properties" : {
-            "DefaultActions" : [{
-	            "Type" : "forward",
-	            "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
-	          }],
-	     "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
-	     "Port" : "80",
-             "Protocol" : "HTTP"
-	        }
       },
       "ALBListener" : {
         "Type" : "AWS::ElasticLoadBalancingV2::Listener",
@@ -322,6 +310,7 @@
           "Protocol" : "HTTPS"
         }
       },
+      
       "ALBTargetGroup" : {
         "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
         "Properties" : {
@@ -329,15 +318,16 @@
           "HealthCheckIntervalSeconds" : 30,
           "HealthCheckTimeoutSeconds" : 5,
           "HealthyThresholdCount" : 3,
+          "HealthCheckPath" : "/",
           "Port" : 80,
+          "HealthCheckPort" :80,
           "Protocol" : "HTTP",
           "UnhealthyThresholdCount" : 5,
-          "TargetGroupAttributes" : [
-              {"Key" : "stickiness.enabled","Value" : "true"}
-          ],
+          "TargetType":"instance",
           "VpcId" : {"Fn::ImportValue" : "VpcID"}
         }
       },
+
       "WebServerSecurityGroup":{
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
@@ -350,6 +340,11 @@
                         "CidrIp": "0.0.0.0/0",
                         "FromPort": 22,
                         "ToPort": 22
+                    },
+                    {
+                    	"SourceSecurityGroupId" : {
+                    		"Ref" : "LoadBalancerSecurityGroup"
+                    	}
                     },
  
                      {

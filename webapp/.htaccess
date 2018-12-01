@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
   RewriteEngine On
-  RewriteCond %{HTTP:X-Forwarded-Proto} =http
-  RewriteRule .* https://%{HTTP:Host}%{REQUEST_URI} [L,R=permanent]
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
 </IfModule>

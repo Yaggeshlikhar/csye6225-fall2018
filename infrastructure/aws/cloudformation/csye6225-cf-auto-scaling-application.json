@@ -296,7 +296,7 @@
         }
       },
 
-      "ALBListener" : {
+      "HttpListener" : {
 	    "Type" : "AWS::ElasticLoadBalancingV2::Listener",
 	    "Properties" : {
             "DefaultActions" : [{
@@ -308,7 +308,7 @@
              "Protocol" : "HTTP"
 	        }
       },
-      "ALBListener" : {
+      "HttpsListener" : {
         "Type" : "AWS::ElasticLoadBalancingV2::Listener",
         "Properties" : {
           "DefaultActions" : [{

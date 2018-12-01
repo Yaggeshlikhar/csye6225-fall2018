@@ -240,7 +240,7 @@
       "Namespace": "AWS/EC2",
       "Statistic": "Average",
       "Period": "120",
-      "EvaluationPeriods": "4",
+      "EvaluationPeriods": "2",
       "Threshold": "10",
       "AlarmActions": [
         {
@@ -266,7 +266,7 @@
       "Namespace": "AWS/EC2",
       "Statistic": "Average",
       "Period": "120",
-      "EvaluationPeriods": "4",
+      "EvaluationPeriods": "2",
       "Threshold": "8",
       "AlarmActions": [
         {
@@ -295,8 +295,8 @@
           "IpAddressType": "ipv4"
         }
       },
-	
-	"ALBListener" : {
+
+      "ALBListener" : {
 	    "Type" : "AWS::ElasticLoadBalancingV2::Listener",
 	    "Properties" : {
             "DefaultActions" : [{
@@ -304,9 +304,8 @@
 	            "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
 	          }],
 	     "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
-	     "Certificates" : [{"CertificateArn":{"Ref" : "SSLArn"}}],
 	     "Port" : "80",
-             "Protocol" : "HTTPS"
+             "Protocol" : "HTTP"
 	        }
       },
       "ALBListener" : {
@@ -322,6 +321,7 @@
           "Protocol" : "HTTPS"
         }
       },
+
       "ALBTargetGroup" : {
         "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
         "Properties" : {
@@ -541,6 +541,8 @@
         "DependsOn" : "ApplicationLoadBalancer"
         }
   },
+
+  
 
    "Outputs":{
             "MySNSTopic":{

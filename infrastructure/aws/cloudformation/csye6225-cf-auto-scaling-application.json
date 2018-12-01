@@ -60,7 +60,8 @@
          "PropagateAtLaunch" : "true"
          } ],
         "TargetGroupARNs" : [ { "Ref" : "ALBTargetGroup" } ]
-      }
+      },
+      "DependsOn" : ["HttpListener", "HttpsListener"]
     },
     "LaunchConfig" : {
       "Type" : "AWS::AutoScaling::LaunchConfiguration",
@@ -508,6 +509,11 @@
                 "ApplicationName": "CSYE6225CodeDeployApplication",
                 "AutoScalingGroups": [{"Ref":"WebServerGroup"}],
                 "DeploymentGroupName": "Codedeploy_groupname",
+                 "DeploymentConfigName": "CodeDeployDefault.AllAtOnce",
+                 "DeploymentStyle": {
+ 							"DeploymentOption": "WITHOUT_TRAFFIC_CONTROL",
+ 							"DeploymentType": "IN_PLACE"
+					},
                 "Ec2TagFilters": [
                     {
                         "Key": "Name",
@@ -516,7 +522,7 @@
                     }
                 ],
                  "LoadBalancerInfo": {
-                    "ElbInfoList": [{
+                 	"ElbInfoList": [{
                         "Name": {"Fn::GetAtt": ["ApplicationLoadBalancer", "LoadBalancerName"]}
           }]
         },

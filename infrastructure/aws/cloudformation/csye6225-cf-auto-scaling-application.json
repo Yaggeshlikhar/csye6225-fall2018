@@ -209,7 +209,7 @@
                  }
             } 
          },
-         "DependsOn":"I"
+         "DependsOn":["WebServerSecurityGroup", "MySNSTopic"]
          
     },
     "WebServerScaleUpPolicy": {
@@ -310,7 +310,6 @@
           "Protocol" : "HTTPS"
         }
       },
-      
       "ALBTargetGroup" : {
         "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
         "Properties" : {

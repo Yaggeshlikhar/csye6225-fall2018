@@ -29,7 +29,7 @@ class CommonController extends Controller {
         $res = $tb_user->where($where)->find();
         if (isset($res)) {
             if (password_verify($pwd, $res['password'])) {
-                $token = $this->getRandomString(20);
+                $token = getRandomString(20);
                 $_SESSION['tokenID'] = $token;
                 $_SESSION['userid'] = $res['id'];
                // $this->ajaxReturn(json_style(200, "login success", 10002));

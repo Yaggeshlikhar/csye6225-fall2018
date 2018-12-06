@@ -12,9 +12,33 @@ class CommonController extends Controller {
     //jude if login
     public function _initialize()
     {
-        $userid=  I('session.userid',null);
-        if (!isset($userid)){
-            $this->ajaxReturn(json_style(401,"sorry you must login first",10009));
+      $user=  @$_SERVER['PHP_AUTH_USER'];
+      $pwd = @$_SERVER['PHP_AUTH_PW'];
+      $this->ifvailduser($user,$pwd);
+    }
+    
+        public function ifvailduser($user,$pwd)
+    {
+        
+        if (!isset($user) || !isset($pwd)) {
+            $this->ajaxReturn(json_style(400, "please provide auth info", 10001));
+        }
+        createUser();
+        $tb_user = M('user');
+        $where['email'] = $user;
+        $res = $tb_user->where($where)->find();
+        if (isset($res)) {
+            if (password_verify($pwd, $res['password'])) {
+                $token = $this->getRandomString(20);
+                $_SESSION['tokenID'] = $token;
+                $_SESSION['userid'] = $res['id'];
+               // $this->ajaxReturn(json_style(200, "login success", 10002));
+            } else {
+                $this->ajaxReturn(json_style(401, "password error,try again", 10003));
+            }
+        } else {
+            $this->ajaxReturn(json_style(401, "the email is not exist", 10004));
+
         }
     }
 

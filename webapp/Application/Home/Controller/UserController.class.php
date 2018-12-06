@@ -25,7 +25,15 @@ class UserController extends Controller
 
     //login API
   
-
+  public  function verifyEmail($str){
+     // $pattern = '/^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}$/';
+     $pattern = '/^[a-z0-9]+([._-][a-z0-9]+)*@([0-9a-z]+\.[a-z]{2,14}(\.[a-z]{2})?)$/i';
+     if(preg_match($pattern,$str)){
+                     return true;
+     }else{
+                     return false;
+          }
+ }
     // register API
     public function register()
     {
@@ -40,6 +48,10 @@ class UserController extends Controller
         $resultData = json_decode($postData, true);
         if (!isset($resultData['email']) || !isset($resultData['password'])) {
             $this->ajaxReturn(json_style(400, "bad request, lack paramters", 10001));
+        }
+        
+         if (!$this->verifyEmail($resultData['email'])) {
+            $this->ajaxReturn(json_style(400, "Email is not vaild", 1200));
         }
 
         $data['email'] = $resultData['email'];
